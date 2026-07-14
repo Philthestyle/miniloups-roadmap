@@ -219,23 +219,21 @@ const DATA = {
     { col: 'done', slice: 'S7', title: 'PaywallView beaugoss', desc: 'Hero balloon + 4 features + toggle mensuel/annuel + CTA gradient', tags: ['money'] },
     { col: 'done', slice: 'S7', title: 'StoreKit 2 config + service', desc: 'Products.storekit + StoreKitService (Product.products, purchase, currentEntitlements)', tags: ['money'] },
     { col: 'done', slice: 'S7', title: 'PaywallGate + trigger Réglages', desc: 'Modifier .paywall(trigger:) + bouton "Passer à Pro" dans Réglages', tags: ['money'] },
+    { col: 'done', slice: 'S7', title: 'Gate 2e bébé (BabyPicker) + historique >30j (Timeline teaser)', desc: 'PaywallTrigger auto quand user hit une limite free tier. Teaser card cliquable pour pushed history.', tags: ['money'] },
+    { col: 'done', slice: 'S9', title: 'Account Deletion in-app (Réglages)', desc: 'Double confirmation → AccountDeleter wipe SwiftData + SessionStore + Consent + reset AppState', tags: ['critical', 'legal'] },
+    { col: 'done', slice: 'S9', title: 'Data Export in-app (RGPD Art. 20)', desc: 'DataExporter → JSON pretty + photos base64 → ShareLink temp file', tags: ['legal'] },
+    { col: 'done', slice: 'S9', title: 'Consentement parental au signup', desc: 'ConsentStore + checkbox obligatoire dans Onboarding avant SIWA. Enregistré à la connexion.', tags: ['critical', 'legal'] },
+    { col: 'done', slice: 'S9', title: 'Liens légaux in-app (Réglages > Légal)', desc: 'Placeholders vers miniloups.app/privacy /terms /support (URLs à monter S10)', tags: ['legal'] },
 
     // -------- DOING --------
     { col: 'doing', slice: 'S7', title: 'Test paywall dans sim', desc: 'Cmd+R → Réglages → Passer à Pro. Acheter, rembourser via Debug > StoreKit > Manage Transactions.', tags: ['critical', 'money'] },
-
-    // -------- TODO --------
-    // S7 finish
-    { col: 'todo', slice: 'S7', title: 'Wire gates 2e bébé / historique >30j / coparent', desc: 'PaywallTrigger auto quand user hit une limite free tier', tags: ['money'] },
 
     // S5/S8 sync
     { col: 'todo', slice: 'S8', title: 'Sync PocketBase (mnl_* tables)', desc: 'Auth SIWA → JWT PocketBase, sync bidirectionnelle Baby + BabyEvent + photos', tags: ['data'] },
     { col: 'todo', slice: 'S8', title: 'Co-parent invite flow', desc: 'Code d\'invitation → PocketBase share record → sync temps réel', tags: ['data'] },
 
     // S9 Compliance
-    { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms (Framer miniloups.app)', desc: 'URLs publiques versionnées — bloqueur App Store submission', tags: ['critical', 'legal'] },
-    { col: 'todo', slice: 'S9', title: 'Consentement parental explicite au signup', desc: 'Checkbox non-cochée + wording enfant/photo/santé', tags: ['critical', 'legal'] },
-    { col: 'todo', slice: 'S9', title: 'Account Deletion in-app', desc: 'Obligatoire Apple depuis 2022. Cascade delete PocketBase < 30j', tags: ['critical', 'legal'] },
-    { col: 'todo', slice: 'S9', title: 'Data Export in-app (RGPD Art. 20)', desc: 'JSON events + baby + zip photos', tags: ['legal'] },
+    { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission (les Link in-app pointent déjà dessus)', tags: ['critical', 'legal'] },
     { col: 'todo', slice: 'S9', title: 'DPA signé avec PocketBase host', desc: 'Hetzner/OVH EU (éviter Schrems II)', tags: ['legal'] },
     { col: 'todo', slice: 'S9', title: 'Registre traitements (RGPD Art. 30)', desc: 'Document interne — obligation même seul', tags: ['legal'] },
     { col: 'todo', slice: 'S9', title: 'DPO email privacy@miniloups.app', desc: 'Point de contact privacy obligatoire', tags: ['legal'] },
