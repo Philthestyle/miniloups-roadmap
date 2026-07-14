@@ -241,6 +241,7 @@ const DATA = {
     { col: 'done', slice: 'UX', title: 'Port composants MayaFitStats → KidsGauges', desc: 'KidsCircularGauge + KidsWeeklyBars + KidsGaugeCard adaptés KidsPalette + Baloo/Nunito. Réutilisables partout.', tags: ['ui'] },
     { col: 'done', slice: 'UX', title: 'Croissance enrichie : 4 gauges + weekly bars', desc: 'BabyDetailView : row 2x2 gauges Sommeil %, Repas, Couches, Balades avec trend 7j en dessous. En plus des Records + Radar + Charts existants.', tags: ['ui'] },
     { col: 'done', slice: 'S8', title: 'Spec Slice 8 — Onglet Santé (inspiré MediTrack)', desc: 'features/slice-8-sante-tab.md — 11 AC, modèles Illness/IllnessEntry/DoctorVisit/Prescription/Vaccination/PregnancyEvent, dashboard + list + detail + analysis, mode grossesse. ~4-6h dev.', tags: ['data'] },
+    { col: 'done', slice: 'S8', title: 'S8 impl full — Santé tab complète', desc: '15 fichiers : 6 @Model (Illness, IllnessEntry, DoctorVisit, Prescription, Vaccination, PregnancyEvent) + enums (IllnessCategory ×16, SymptomType ×19, PractitionerType, PregnancyEventType) + SanteView + SanteDashboardView (annual counters, active banner, upcoming visits/vaccines) + IllnessListScreen (filter status + category) + IllnessDetailScreen (entries timeline + visits + prescriptions + mark recovered) + AddIllnessSheet + AddIllnessEntrySheet (symptoms picker cycle severity) + AddDoctorVisitSheet + PregnancyView + HealthAnalysisView (bar chart 12m + pie chart) + HealthStatsCalculator + PaywallTrigger.medicalOverLimit (free = max 3 illnesses). Build vert.', tags: ['critical', 'data'] },
 
     // -------- DOING --------
     { col: 'doing', slice: 'S7', title: 'Test paywall dans sim', desc: 'Cmd+R → Réglages → Passer à Pro. Acheter, rembourser via Debug > StoreKit > Manage Transactions.', tags: ['critical', 'money'] },
@@ -286,7 +287,7 @@ const DATA = {
     { col: 'todo', slice: 'S12', title: 'Content SEO /journal (20 articles)', desc: 'Rythme bébé 3 mois, combien de couches, etc. 6-12 mois pour ranker', tags: ['growth'] },
 
     // -------- BLOCKED --------
-    { col: 'blocked', slice: '—', title: 'Compte Apple Developer Program', desc: 'À valider (99$/an) si pas déjà actif. Sans ça, pas de submission.', tags: ['critical'] },
+    { col: 'done', slice: 'ADMIN', title: 'Compte Apple Developer Program (99€/an)', desc: '✅ Validé le 2026-07-14. Team ID à configurer dans Config/Secrets.xcconfig avant Archive.', tags: ['critical'] },
     { col: 'blocked', slice: '—', title: 'Domaine miniloups.app', desc: 'Vérifier disponibilité + acheter (~14€/an .app)', tags: [] },
     { col: 'blocked', slice: '—', title: 'Email privacy@miniloups.app opérationnel', desc: 'Fastmail/Proton/Google Workspace', tags: ['legal'] },
 
