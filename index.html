@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MiniLoups — Roadmap Submit App Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink:   #FF86B6;
+    --orange: #FFA94D;
+    --yellow: #FFD43B;
+    --green:  #6EDC9B;
+    --blue:   #4D96FF;
+    --violet: #B78BFF;
+    --cream:  #FFF7ED;
+    --ink:    #1F2937;
+    --muted:  #6B7280;
+    --line:   rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: linear-gradient(135deg, #FFF7ED 0%, #FFE9F1 60%, #EEE5FF 100%);
+    color: var(--ink);
+    font-family: 'Nunito', -apple-system, system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    padding: 32px 40px 20px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 20px;
+  }
+  h1 {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800; font-size: 44px;
+    margin: 0;
+    background: linear-gradient(90deg, var(--pink), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  .sub { color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .stat {
+    background: #fff; border-radius: 14px; padding: 10px 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    font-weight: 700; display: flex; gap: 8px; align-items: center;
+  }
+  .stat .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .stat.todo .dot { background: var(--muted); }
+  .stat.doing .dot { background: var(--blue); }
+  .stat.blocked .dot { background: var(--orange); }
+  .stat.done .dot { background: var(--green); }
+  .stat.submit .dot { background: var(--pink); }
+  .refresh-btn {
+    background: linear-gradient(90deg, var(--pink), var(--violet));
+    color: #fff; border: 0; border-radius: 14px; padding: 10px 18px;
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 700; font-size: 15px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(255,134,182,0.35);
+  }
+  .refresh-btn:hover { transform: translateY(-1px); }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(240px, 1fr));
+    gap: 14px;
+    padding: 16px 24px 40px 24px;
+  }
+  .col {
+    background: rgba(255,255,255,0.75);
+    border-radius: 20px;
+    padding: 14px;
+    min-height: 400px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    border: 1px solid var(--line);
+  }
+  .col.submit {
+    background: linear-gradient(160deg, #FF86B6 0%, #B78BFF 100%);
+    color: #fff;
+  }
+  .col.submit .col-title,
+  .col.submit .card,
+  .col.submit .count-pill { color: #fff; }
+  .col.submit .card {
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.25);
+  }
+  .col.submit .card .desc { color: rgba(255,255,255,0.85); }
+  .col.submit .card .tag { background: rgba(255,255,255,0.22); color: #fff; }
+  .col-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 6px 12px 6px;
+  }
+  .col-title {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .count-pill {
+    background: rgba(0,0,0,0.06); padding: 2px 10px;
+    border-radius: 999px; font-weight: 700; font-size: 12px;
+    color: var(--ink);
+  }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    transition: transform 0.15s ease;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+  .card .head {
+    display: flex; align-items: flex-start; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .card .title {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 700; font-size: 15px; line-height: 1.2;
+    flex: 1;
+  }
+  .card .slice {
+    font-size: 11px; padding: 2px 8px;
+    background: var(--yellow); color: var(--ink);
+    border-radius: 999px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .card .desc {
+    font-size: 13px; color: var(--muted);
+    margin: 4px 0 8px 0; line-height: 1.4;
+  }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .card .tag {
+    font-size: 11px; padding: 2px 8px;
+    background: rgba(0,0,0,0.06); border-radius: 999px;
+    color: var(--muted); font-weight: 600;
+  }
+  .card .tag.critical { background: rgba(255,134,182,0.20); color: #C2185B; }
+  .card .tag.legal { background: rgba(183,139,255,0.20); color: #6A1B9A; }
+  .card .tag.money { background: rgba(255,169,77,0.25); color: #B45309; }
+  .card .tag.growth { background: rgba(110,220,155,0.30); color: #1B5E20; }
+  .card .tag.done-check { background: var(--green); color: #fff; }
+  footer {
+    text-align: center; padding: 20px;
+    color: var(--muted); font-size: 12px;
+  }
+  .progress-bar {
+    background: rgba(0,0,0,0.06); height: 10px; border-radius: 999px;
+    overflow: hidden; margin: 8px 0 0 0; width: 100%;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--green), var(--blue));
+    transition: width 0.5s ease;
+  }
+  .kpi-strip {
+    display: flex; gap: 12px; align-items: center;
+    padding: 8px 40px 0 40px; flex-wrap: wrap;
+  }
+  .kpi-strip .kpi {
+    font-size: 12px; color: var(--muted); font-weight: 700;
+  }
+  @media (max-width: 1200px) { .board { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .board { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>MiniLoups — Submit Roadmap 🎈</h1>
+    <div class="sub">Chemin complet jusqu'à l'App Store</div>
+  </div>
+  <div class="toolbar">
+    <div class="stat todo"><span class="dot"></span><span id="count-todo">–</span> TODO</div>
+    <div class="stat doing"><span class="dot"></span><span id="count-doing">–</span> DOING</div>
+    <div class="stat blocked"><span class="dot"></span><span id="count-blocked">–</span> BLOCKED</div>
+    <div class="stat done"><span class="dot"></span><span id="count-done">–</span> DONE</div>
+    <button class="refresh-btn" onclick="location.reload()">🔄 Recharger</button>
+  </div>
+</header>
+
+<div class="kpi-strip">
+  <div class="kpi" id="progress-label">Progression globale : – %</div>
+  <div style="flex:1"></div>
+  <div class="kpi">Généré : <span id="gen-date">–</span></div>
+</div>
+<div style="padding: 0 40px;">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<div class="board" id="board"></div>
+
+<footer>
+  Fais tourner <code>sh scripts/refresh-roadmap.sh</code> pour régénérer la roadmap depuis le code.<br/>
+  Fichier : <code>roadmap/index.html</code>
+</footer>
+
+<script>
+const DATA = {
+  columns: [
+    { key: 'todo',    title: '📋 TODO',    color: 'muted' },
+    { key: 'doing',   title: '🚀 DOING',   color: 'blue' },
+    { key: 'blocked', title: '⚠️ BLOCKED', color: 'orange' },
+    { key: 'done',    title: '✅ DONE',    color: 'green' },
+    { key: 'submit',  title: '🎯 SUBMIT to APPLE', color: 'pink' },
+  ],
+  cards: [
+    // -------- DONE --------
+    { col: 'done', slice: 'S1', title: 'Onboarding + SIWA + AddBaby + BabyPicker', tags: ['foundation'] },
+    { col: 'done', slice: 'S2', title: 'Timeline live + Quick Actions + Chronos', tags: ['ux'] },
+    { col: 'done', slice: 'S3', title: 'Tab bar + Add-Event + Event-Detail + Payload editors', tags: ['ux'] },
+    { col: 'done', slice: 'S4', title: 'Croissance : BabyDetail + Charts + Radar 5-axes + RecordShelf', tags: ['data'] },
+    { col: 'done', slice: 'S6', title: 'DS Kids + Timeline DailyCocoon + Photos max 5', desc: 'Palette 6 couleurs saturées, Baloo 2 + Nunito bundlés, PhotoGridView adaptive 1..5', tags: ['ui', 'done-check'] },
+    { col: 'done', slice: 'S6', title: 'Splash animé montgolfière', desc: 'KidsHotAirBalloon (SwiftUI shapes) + spring animation', tags: ['ui'] },
+    { col: 'done', slice: 'S7', title: 'PaywallView beaugoss', desc: 'Hero balloon + 4 features + toggle mensuel/annuel + CTA gradient', tags: ['money'] },
+    { col: 'done', slice: 'S7', title: 'StoreKit 2 config + service', desc: 'Products.storekit + StoreKitService (Product.products, purchase, currentEntitlements)', tags: ['money'] },
+    { col: 'done', slice: 'S7', title: 'PaywallGate + trigger Réglages', desc: 'Modifier .paywall(trigger:) + bouton "Passer à Pro" dans Réglages', tags: ['money'] },
+
+    // -------- DOING --------
+    { col: 'doing', slice: 'S7', title: 'Test paywall dans sim', desc: 'Cmd+R → Réglages → Passer à Pro. Acheter, rembourser via Debug > StoreKit > Manage Transactions.', tags: ['critical', 'money'] },
+
+    // -------- TODO --------
+    // S7 finish
+    { col: 'todo', slice: 'S7', title: 'Wire gates 2e bébé / historique >30j / coparent', desc: 'PaywallTrigger auto quand user hit une limite free tier', tags: ['money'] },
+
+    // S5/S8 sync
+    { col: 'todo', slice: 'S8', title: 'Sync PocketBase (mnl_* tables)', desc: 'Auth SIWA → JWT PocketBase, sync bidirectionnelle Baby + BabyEvent + photos', tags: ['data'] },
+    { col: 'todo', slice: 'S8', title: 'Co-parent invite flow', desc: 'Code d\'invitation → PocketBase share record → sync temps réel', tags: ['data'] },
+
+    // S9 Compliance
+    { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms (Framer miniloups.app)', desc: 'URLs publiques versionnées — bloqueur App Store submission', tags: ['critical', 'legal'] },
+    { col: 'todo', slice: 'S9', title: 'Consentement parental explicite au signup', desc: 'Checkbox non-cochée + wording enfant/photo/santé', tags: ['critical', 'legal'] },
+    { col: 'todo', slice: 'S9', title: 'Account Deletion in-app', desc: 'Obligatoire Apple depuis 2022. Cascade delete PocketBase < 30j', tags: ['critical', 'legal'] },
+    { col: 'todo', slice: 'S9', title: 'Data Export in-app (RGPD Art. 20)', desc: 'JSON events + baby + zip photos', tags: ['legal'] },
+    { col: 'todo', slice: 'S9', title: 'DPA signé avec PocketBase host', desc: 'Hetzner/OVH EU (éviter Schrems II)', tags: ['legal'] },
+    { col: 'todo', slice: 'S9', title: 'Registre traitements (RGPD Art. 30)', desc: 'Document interne — obligation même seul', tags: ['legal'] },
+    { col: 'todo', slice: 'S9', title: 'DPO email privacy@miniloups.app', desc: 'Point de contact privacy obligatoire', tags: ['legal'] },
+    { col: 'todo', slice: 'S9', title: 'Mentions légales + CGV', desc: 'Obligation FR pour app commerciale avec abonnement', tags: ['legal'] },
+    { col: 'todo', slice: 'S9', title: 'Refresh NSPhotoLibraryUsageDescription précise', desc: 'Wording custom FR + EN qui explique usage journal bébé', tags: ['legal'] },
+
+    // S10 App Store assets
+    { col: 'todo', slice: 'S10', title: 'App Icon 1024x1024', desc: 'Version finale montgolfière crème sur fond bleu (cf DS)', tags: ['critical', 'ui'] },
+    { col: 'todo', slice: 'S10', title: 'Screenshots iPhone 6.9" (obligatoire)', desc: '3-10 shots avec captions marketing overlay', tags: ['critical', 'ui'] },
+    { col: 'todo', slice: 'S10', title: 'Screenshots iPhone 6.5" (obligatoire)', desc: '3-10 shots avec captions', tags: ['critical'] },
+    { col: 'todo', slice: 'S10', title: 'App Preview videos 15-30s', desc: 'Boost conversion +25% (Apple stat). Optionnel mais reco.', tags: ['growth'] },
+    { col: 'todo', slice: 'S10', title: 'App Name (30c) : "MiniLoups: Suivi Bébé"', desc: 'Décider entre "Suivi Bébé" / "Journal Bébé"', tags: ['critical'] },
+    { col: 'todo', slice: 'S10', title: 'Subtitle (30c) : "Rythme & photos partagés"', desc: 'À affiner', tags: [] },
+    { col: 'todo', slice: 'S10', title: 'Keywords (100c)', desc: 'bébé,nouveau-né,sommeil,biberon,couche,journal,coparent,rythme,allaitement,croissance,parents', tags: ['growth'] },
+    { col: 'todo', slice: 'S10', title: 'Description longue (4000c) FR + EN', desc: 'Hero + bullets features + reassurance RGPD', tags: ['critical'] },
+    { col: 'todo', slice: 'S10', title: 'What\'s New (release notes)', desc: 'v0.1.0 launch notes', tags: [] },
+    { col: 'todo', slice: 'S10', title: 'Promotional Text (170c)', desc: 'Éditable sans review — pour push updates', tags: [] },
+    { col: 'todo', slice: 'S10', title: 'URLs support/marketing/privacy', desc: 'miniloups.app/support · miniloups.app · miniloups.app/privacy', tags: ['critical'] },
+    { col: 'todo', slice: 'S10', title: 'Age Rating 4+', desc: 'Questionnaire Apple à remplir', tags: [] },
+    { col: 'todo', slice: 'S10', title: 'Privacy Nutrition Label', desc: 'Déclarer types data collectés + usages dans App Store Connect', tags: ['critical', 'legal'] },
+    { col: 'todo', slice: 'S10', title: 'Catégorie primaire : Lifestyle', desc: 'PAS Kids (règles trop strictes). Parent = user adulte.', tags: [] },
+    { col: 'todo', slice: 'S10', title: 'Localizations FR + EN', desc: 'Metadata + strings app', tags: ['growth'] },
+
+    // S11 TestFlight
+    { col: 'todo', slice: 'S11', title: 'Configurer Team ID / signing dans Config/Secrets.xcconfig', desc: 'DEVELOPMENT_TEAM + CODE_SIGN_STYLE — gitignored', tags: ['critical'] },
+    { col: 'todo', slice: 'S11', title: 'Archive + upload TestFlight', desc: 'Xcode > Product > Archive → Distribute > TestFlight', tags: ['critical'] },
+    { col: 'todo', slice: 'S11', title: 'Beta internal (soi + coparent)', desc: 'Ajouter testers dans App Store Connect', tags: [] },
+    { col: 'todo', slice: 'S11', title: 'Beta externe (20-100 parents)', desc: 'Recruter via Reddit r/newparents, Insta parentalité', tags: ['growth'] },
+    { col: 'todo', slice: 'S11', title: 'Sandbox testers créés', desc: 'Comptes App Store Connect pour tester purchase flow', tags: ['money'] },
+
+    // S12 Growth
+    { col: 'todo', slice: 'S12', title: 'Landing miniloups.app (Framer)', desc: 'Waitlist email → notify at launch', tags: ['growth'] },
+    { col: 'todo', slice: 'S12', title: 'Apple Search Ads FR (30-50€/j)', desc: 'Keywords: suivi bébé, baby tracker, journal bébé. CPI ~2-4€.', tags: ['money', 'growth'] },
+    { col: 'todo', slice: 'S12', title: 'Meta Ads (Insta/FB) target mums 25-40', desc: 'Créatifs UGC > brand', tags: ['growth'] },
+    { col: 'todo', slice: 'S12', title: 'Referral loop coparent = 1 mois Pro offert', desc: 'Chaîne viral naturelle', tags: ['growth', 'money'] },
+    { col: 'todo', slice: 'S12', title: 'Product Hunt launch day-of', desc: 'Audience US early adopters', tags: ['growth'] },
+    { col: 'todo', slice: 'S12', title: 'Content SEO /journal (20 articles)', desc: 'Rythme bébé 3 mois, combien de couches, etc. 6-12 mois pour ranker', tags: ['growth'] },
+
+    // -------- BLOCKED --------
+    { col: 'blocked', slice: '—', title: 'Compte Apple Developer Program', desc: 'À valider (99$/an) si pas déjà actif. Sans ça, pas de submission.', tags: ['critical'] },
+    { col: 'blocked', slice: '—', title: 'Domaine miniloups.app', desc: 'Vérifier disponibilité + acheter (~14€/an .app)', tags: [] },
+    { col: 'blocked', slice: '—', title: 'Email privacy@miniloups.app opérationnel', desc: 'Fastmail/Proton/Google Workspace', tags: ['legal'] },
+
+    // -------- SUBMIT to APPLE --------
+    { col: 'submit', slice: '🎯', title: 'App Store Connect metadata complet', desc: 'Name, subtitle, keywords, description, screenshots, icon, previews, URLs, age rating, nutrition label', tags: [] },
+    { col: 'submit', slice: '🎯', title: 'Build TestFlight validé (beta 2 semaines)', desc: 'Zero crash, feedback positif ≥ 80%', tags: [] },
+    { col: 'submit', slice: '🎯', title: 'Privacy Policy + Terms LIVE sur miniloups.app', desc: 'URLs publiques accessibles', tags: [] },
+    { col: 'submit', slice: '🎯', title: 'Submit for Review (App Store Connect)', desc: 'Attendre 24-48h review. Prêt à répondre si rejection.', tags: [] },
+    { col: 'submit', slice: '🎉', title: 'LAUNCH DAY — Manual Release', desc: 'Contrôle la date pour aligner avec ads + PR + Product Hunt', tags: [] },
+  ]
+};
+
+function render() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  const counts = { todo: 0, doing: 0, blocked: 0, done: 0, submit: 0 };
+  DATA.columns.forEach(col => {
+    const cards = DATA.cards.filter(c => c.col === col.key);
+    counts[col.key] = cards.length;
+    const el = document.createElement('div');
+    el.className = 'col ' + col.key;
+    el.innerHTML = `
+      <div class="col-header">
+        <div class="col-title">${col.title}</div>
+        <div class="count-pill">${cards.length}</div>
+      </div>
+      ${cards.map(cardHTML).join('')}
+    `;
+    board.appendChild(el);
+  });
+  document.getElementById('count-todo').textContent = counts.todo;
+  document.getElementById('count-doing').textContent = counts.doing;
+  document.getElementById('count-blocked').textContent = counts.blocked;
+  document.getElementById('count-done').textContent = counts.done;
+  const total = counts.todo + counts.doing + counts.blocked + counts.done;
+  const pct = total ? Math.round((counts.done / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `Progression globale : ${pct}% (${counts.done}/${total} tâches hors submit-final)`;
+  const d = new Date();
+  document.getElementById('gen-date').textContent = d.toLocaleString('fr-FR');
+}
+
+function cardHTML(c) {
+  const tags = (c.tags || []).map(t => `<span class="tag ${t}">${t}</span>`).join('');
+  const desc = c.desc ? `<div class="desc">${c.desc}</div>` : '';
+  const slice = c.slice ? `<div class="slice">${c.slice}</div>` : '';
+  return `
+    <div class="card">
+      <div class="head">
+        <div class="title">${c.title}</div>
+        ${slice}
+      </div>
+      ${desc}
+      ${tags ? `<div class="tags">${tags}</div>` : ''}
+    </div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
