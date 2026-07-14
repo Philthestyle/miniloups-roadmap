@@ -237,14 +237,19 @@ const DATA = {
     { col: 'done', slice: 'UX', title: 'Header shrink-on-scroll (Home)', desc: 'TimelineHeaderView pinned + compactProgress 0..1 basé sur scrollOffset + PreferenceKey. Anim easeOut 12ms.', tags: ['ui'] },
     { col: 'done', slice: 'UX', title: 'Filter bar horizontale (Home)', desc: 'TimelineFilterBar chips scrollables : Tout · Repas · Sommeil · Hygiène · Croissance · Santé. Filter finishedEvents by category.', tags: ['ui'] },
     { col: 'done', slice: 'S7', title: 'Fix isPro immédiat post-achat', desc: 'StoreKitService.purchase → set isPro=true dès verification avant refreshEntitlements. Propagation SwiftUI immédiate vers Réglages.', tags: ['money'] },
+    { col: 'done', slice: 'UX', title: 'Swipe left/right pour changer de bébé', desc: 'BabyCycler + BabySwipeGesture modifier appliqué à Timeline + BabyDetail. DragGesture 80pt threshold, spring anim, haptic light.', tags: ['ui'] },
+    { col: 'done', slice: 'UX', title: 'Port composants MayaFitStats → KidsGauges', desc: 'KidsCircularGauge + KidsWeeklyBars + KidsGaugeCard adaptés KidsPalette + Baloo/Nunito. Réutilisables partout.', tags: ['ui'] },
+    { col: 'done', slice: 'UX', title: 'Croissance enrichie : 4 gauges + weekly bars', desc: 'BabyDetailView : row 2x2 gauges Sommeil %, Repas, Couches, Balades avec trend 7j en dessous. En plus des Records + Radar + Charts existants.', tags: ['ui'] },
+    { col: 'done', slice: 'S8', title: 'Spec Slice 8 — Onglet Santé (inspiré MediTrack)', desc: 'features/slice-8-sante-tab.md — 11 AC, modèles Illness/IllnessEntry/DoctorVisit/Prescription/Vaccination/PregnancyEvent, dashboard + list + detail + analysis, mode grossesse. ~4-6h dev.', tags: ['data'] },
 
     // -------- DOING --------
     { col: 'doing', slice: 'S7', title: 'Test paywall dans sim', desc: 'Cmd+R → Réglages → Passer à Pro. Acheter, rembourser via Debug > StoreKit > Manage Transactions.', tags: ['critical', 'money'] },
     { col: 'doing', slice: 'UX', title: 'Feedback header + filter row (test visuel)', desc: 'Header pinned qui rétrécit smoothly au scroll (200→92pt) + TimelineFilterBar horizontale (Tout/Repas/Sommeil/Hygiène/Croissance/Santé). Tu confirmes que ça t\'plaît.', tags: ['ui'] },
 
     // S5/S8 sync
-    { col: 'todo', slice: 'S8', title: 'Sync PocketBase (mnl_* tables)', desc: 'Auth SIWA → JWT PocketBase, sync bidirectionnelle Baby + BabyEvent + photos', tags: ['data'] },
-    { col: 'todo', slice: 'S8', title: 'Co-parent invite flow', desc: 'Code d\'invitation → PocketBase share record → sync temps réel', tags: ['data'] },
+    { col: 'todo', slice: 'S8', title: 'Impl Santé tab (modèles + dashboard + list + detail)', desc: 'features/slice-8-sante-tab.md · 11 AC. Illness / IllnessEntry / DoctorVisit / Prescription / Vaccination / PregnancyEvent + Dashboard + AnalysisTabView.', tags: ['data', 'critical'] },
+    { col: 'todo', slice: 'S8b', title: 'Sync PocketBase (mnl_* tables)', desc: 'Auth SIWA → JWT PocketBase, sync bidirectionnelle Baby + BabyEvent + Illness + photos', tags: ['data'] },
+    { col: 'todo', slice: 'S8b', title: 'Co-parent invite flow', desc: 'Code d\'invitation → PocketBase share record → sync temps réel', tags: ['data'] },
 
     // S9 Compliance
     { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission (les Link in-app pointent déjà dessus)', tags: ['critical', 'legal'] },
