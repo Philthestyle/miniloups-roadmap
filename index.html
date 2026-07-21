@@ -751,6 +751,10 @@ const CARD_META = {
   '✅ S12.11b — Wire FamilyRealtimeChannel dans MiniLoupsApp': { session: 6, theme: 'data', delivered: '2026-07-21' },
   '🔥 Fix env overlay crash au launch': { session: 6, theme: 'core', delivered: '2026-07-21' },
   '📸 5 screenshots iPhone 17 Pro Max session 6': { session: 6, theme: 'store', delivered: '2026-07-21' },
+  '✅ S9.5 — BabyMultiPickerView (link quick action à N bébés)': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.13b — Edit-in-place wizard mode': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '📸 5 shots iPhone 17 Pro Max post-fixes': { session: 6, theme: 'store', delivered: '2026-07-21' },
+  '🪝 Post-commit hook auto-publish roadmap': { session: 6, theme: 'core', delivered: '2026-07-21' },
 };
 
 // =========================================================================
@@ -858,7 +862,11 @@ const DATA = {
     { col: 'done', slice: 'S12.11b', title: '✅ S12.11b — Wire FamilyRealtimeChannel dans MiniLoupsApp', desc: 'Instancie FamilyRealtimeChannel dans init + inject env. FamilyRealtimeStarter overlay invisible watch startKey + start/stop channel selon état auth+family. PR#20.', tags: ['critical', 'data'] },
     { col: 'done', slice: 'FIX', title: '🔥 Fix env overlay crash au launch', desc: 'Bug critique découvert en test sim (fresh install crash "No Observable object of type LiveActivityToastCenter"). Overlays attachés après .environment() ne reçoivent pas l\'env. Fix : .overlay avant .environment dans MiniLoupsApp. PR#21.', tags: ['critical'] },
     { col: 'done', slice: 'STORE', title: '📸 5 screenshots iPhone 17 Pro Max session 6', desc: 'store/screenshots/20260721-1634-s12-slice-complete : 01-wizard-welcome + 02-home-timeline (+ FamilyActivityBanner empty) + 03-stats-tab + 04-compte-reglages + 05-planning-calendrier. Captured via xcrun simctl après fresh install + MINILOUPS_AUTO_DEMO. PR#22.', tags: ['ui'] },
-    { col: 'todo', slice: 'S9', title: 'S9.3-9.5 — BabyMultiPicker + dock long-press context (reste)', desc: 'BabyMultiPickerView pour linkedBabyIDs multi-select + long-press context menu depuis le dock Timeline directement (actuellement seulement dans QuickActionEditSheet).', tags: ['ui'] },
+    { col: 'done', slice: 'S9.5', title: '✅ S9.5 — BabyMultiPickerView (link quick action à N bébés)', desc: 'Chip picker horizontal multi-select avatar + prénom + checkmark. Empty selection = comportement par défaut. Non-empty = action liée à N bébés. Intégré dans CustomQuickActionBuilder section Bébés concernés. Hint si un seul bébé. PR#24.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.13b', title: '✅ S12.13b — Edit-in-place wizard mode', desc: 'Nouveau init FamilyWizardCoordinator(editing:, currentUserID:) hydrate depuis Family existante. DraftParent/DraftBaby portent linkedID → committer upsert (update champs sur existing @Model + bump updatedAt au lieu de créer). FamilySectionCard "Modifier profils" passe family en editing:. PR#25.', tags: ['ui'] },
+    { col: 'done', slice: 'STORE', title: '📸 5 shots iPhone 17 Pro Max post-fixes', desc: 'store/screenshots/20260721-1700-post-fixes : wizard-welcome + home-timeline (FamilyActivityBanner empty) + stats-tab (Croissance Léa 8 mois gauges) + reglages-family-card (Pro + FamilySectionCard avec avatars) + planning-calendrier. rawValue "settings" au lieu de "compte" pour le tab. PR#26.', tags: ['ui'] },
+    { col: 'done', slice: 'CHORE', title: '🪝 Post-commit hook auto-publish roadmap', desc: 'scripts/hooks/post-commit détecte si roadmap/index.html touché + auto-run publish-roadmap.sh vers GH Pages. Non-bloquant. Enable via git config core.hooksPath scripts/hooks. README doc. PR#27.', tags: [] },
+    { col: 'todo', slice: 'S9', title: 'S9.5b — dock long-press context menu Timeline direct', desc: 'Ajouter .contextMenu depuis le dock QuickActionsDock directement (actuellement seulement dans QuickActionEditSheet — sheet en 2 taps).', tags: ['ui'] },
 
     // S9 Compliance
     { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission', tags: ['critical', 'legal'] },
