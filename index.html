@@ -755,6 +755,10 @@ const CARD_META = {
   '✅ S12.13b — Edit-in-place wizard mode': { session: 6, theme: 'features', delivered: '2026-07-21' },
   '📸 5 shots iPhone 17 Pro Max post-fixes': { session: 6, theme: 'store', delivered: '2026-07-21' },
   '🪝 Post-commit hook auto-publish roadmap': { session: 6, theme: 'core', delivered: '2026-07-21' },
+  '✅ App Store submission checklist + metadata FR update S12': { session: 6, theme: 'store', delivered: '2026-07-21' },
+  '✅ Privacy Policy Framer-ready HTML': { session: 6, theme: 'legal', delivered: '2026-07-21' },
+  '✅ S12 test suite 27 tests (regression prevention)': { session: 6, theme: 'core', delivered: '2026-07-21' },
+  '✅ S9.5b — Long-press context menu radial bubbles': { session: 6, theme: 'features', delivered: '2026-07-21' },
 };
 
 // =========================================================================
@@ -866,7 +870,10 @@ const DATA = {
     { col: 'done', slice: 'S12.13b', title: '✅ S12.13b — Edit-in-place wizard mode', desc: 'Nouveau init FamilyWizardCoordinator(editing:, currentUserID:) hydrate depuis Family existante. DraftParent/DraftBaby portent linkedID → committer upsert (update champs sur existing @Model + bump updatedAt au lieu de créer). FamilySectionCard "Modifier profils" passe family en editing:. PR#25.', tags: ['ui'] },
     { col: 'done', slice: 'STORE', title: '📸 5 shots iPhone 17 Pro Max post-fixes', desc: 'store/screenshots/20260721-1700-post-fixes : wizard-welcome + home-timeline (FamilyActivityBanner empty) + stats-tab (Croissance Léa 8 mois gauges) + reglages-family-card (Pro + FamilySectionCard avec avatars) + planning-calendrier. rawValue "settings" au lieu de "compte" pour le tab. PR#26.', tags: ['ui'] },
     { col: 'done', slice: 'CHORE', title: '🪝 Post-commit hook auto-publish roadmap', desc: 'scripts/hooks/post-commit détecte si roadmap/index.html touché + auto-run publish-roadmap.sh vers GH Pages. Non-bloquant. Enable via git config core.hooksPath scripts/hooks. README doc. PR#27.', tags: [] },
-    { col: 'todo', slice: 'S9', title: 'S9.5b — dock long-press context menu Timeline direct', desc: 'Ajouter .contextMenu depuis le dock QuickActionsDock directement (actuellement seulement dans QuickActionEditSheet — sheet en 2 taps).', tags: ['ui'] },
+    { col: 'done', slice: 'STORE', title: '✅ App Store submission checklist + metadata FR update S12', desc: 'store/submission-checklist.md avec 10 étapes de submission + bloqueurs externes (signing, domaine, Framer, DPA) + rejection review points. Metadata FR mis à jour avec sections COPARENT <2s + AUDIT LOG + What\'s New v1.0.0 exhaustif. PR#29.', tags: [] },
+    { col: 'done', slice: 'LEGAL', title: '✅ Privacy Policy Framer-ready HTML', desc: 'legal/framer-html/privacy.html stylée (Baloo 2 + Nunito + palette Kids gradient) + placeholders orange-tinted pour repérer [DATE_LAUNCH]/[RAISON_SOCIALE]/[SIREN]/[ADRESSE]/[NOM_DPO]. README doc URLs cibles miniloups.app. Terms/Support/Mentions HTML follow-up. PR#30.', tags: ['legal'] },
+    { col: 'done', slice: 'TESTS', title: '✅ S12 test suite 27 tests (regression prevention)', desc: 'Tests/FamilyTests/ 4 fichiers : FamilyWizardCoordinator (11 tests navigation/canAdvance/skip parent2Profile) + AudiencePhraseBuilder (8 tests FR phrases) + ParentColorPalette (4 tests stable hash) + FamilyActivityFetcher (4 tests dédup BR8). Fix RootTabTests obsolète post-Slice10. PR#31.', tags: [] },
+    { col: 'done', slice: 'S9.5b', title: '✅ S9.5b — Long-press context menu radial bubbles', desc: 'RadialActionBubble .contextMenu Modifier/Cacher/Supprimer + onEdit callback vers CustomQuickActionBuilder(.edit). Flow Home → FAB → radial → long-press → menu → 1 tap au lieu de 3-tap via sheet. PR#32.', tags: ['ui'] },
 
     // S9 Compliance
     { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission', tags: ['critical', 'legal'] },
