@@ -741,10 +741,10 @@ const CARD_META = {
   'Capture des 6 screenshots (iPhone 6.9") — 3/6 fait': { session: 4, theme: 'store', started: '2026-07-17' },
   'Test paywall dans sim': { session: 3, theme: 'features', started: '2026-07-15' },
   'Feedback header + filter row (test visuel)': { session: 3, theme: 'design', started: '2026-07-15' },
-  '📡 S12.11 — PBRealtimeSSEClient + FamilyRealtimeChannel (<2s propagation)': { session: 6, theme: 'data' },
-  '🍞 S12.12 — LiveActivityToast in-app foreground': { session: 6, theme: 'features' },
-  '⚙️ S12.13 — FamilySectionCard Réglages + cleanup debug': { session: 6, theme: 'features' },
-  '🗄 S12.14 — Migration PB + push/pull SyncEngine + tests intégration': { session: 6, theme: 'data' },
+  '✅ S12.11 — PBRealtimeSSEClient + FamilyRealtimeChannel': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '✅ S12.12 — LiveActivityToast in-app foreground': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.13 — FamilySectionCard Réglages + retrait debug entry': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '🎉 S12.14 — PB migration + SyncEngine Family/Parent/ChangeLog': { session: 6, theme: 'data', delivered: '2026-07-21' },
 };
 
 // =========================================================================
@@ -840,10 +840,10 @@ const DATA = {
     { col: 'done', slice: 'S12.7', title: '✅ S12.7 — Wire wizard post-SIWA + FamilyWizardCommitter + FamilyMigrator (BR13)', desc: 'RootRouter refactor (familyWizard route). FamilyWizardCommitter (insert atomique Family+Parents+Babies). FamilyMigrator (Baby standalone → Family auto). RootRouterTests 3/3 verts. PR#8.', tags: ['critical', 'data', 'ui'] },
     { col: 'done', slice: 'S12.8', title: '✅ S12.8 — AudiencePhraseBuilder + EventHistorySection + delete audit', desc: 'AudiencePhraseBuilder FR + mapping fieldPath dotted → labels FR. EventHistorySection dans EventDetailView : rail chronologique dots colorés + avatars + phrases. Hook log(deleted) avant context.delete. PR#9.', tags: ['ui', 'data'] },
     { col: 'done', slice: 'S12.9-10', title: '✅ S12.9-10 — FamilyActivityBanner + FamilyActivityView + Fetcher + Row', desc: 'Fetcher (dedup BR8 30s + batch parents) + EventChangeRow + Banner Home 3 items + View fullscreen filter chip par baby + navigation vers EventDetailView + placeholder si event supprimé (BR9). PR#10.', tags: ['ui', 'data'] },
-    { col: 'todo', slice: 'S12.11', title: '📡 S12.11 — PBRealtimeSSEClient + FamilyRealtimeChannel (<2s propagation)', desc: 'actor URLSessionDataTask sur /api/realtime, parse SSE lines, reconnect exponential 1s→30s + circuit breaker 5 échecs. Subscribe 3 collections filtrées family_id. Dispatch invalidation SyncEngine.', tags: ['critical', 'data'] },
-    { col: 'todo', slice: 'S12.12', title: '🍞 S12.12 — LiveActivityToast in-app foreground', desc: 'Floating toast bottom "Papa a ajouté un biberon pour Roméo" 3s auto-dismiss. Trigger SSE. BR11 foreground only en v1.', tags: ['ui'] },
-    { col: 'todo', slice: 'S12.13', title: '⚙️ S12.13 — FamilySectionCard Réglages + cleanup debug', desc: 'Card Réglages avec avatars famille + Inviter coparent + Modifier profils + Supprimer ma famille triple confirmation (BR15). Retire debug entry S12.5.', tags: ['ui'] },
-    { col: 'todo', slice: 'S12.14', title: '🗄 S12.14 — Migration PB + push/pull SyncEngine + tests intégration', desc: 'Migration JS PB (mnl_families/mnl_parents/mnl_event_change_logs/mnl_invites + extensions mnl_babies/mnl_events + access rules RGPD + index (family_id, changed_at DESC)). Push/pull SyncEngine. Tests intégration access rules.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'S12.11', title: '✅ S12.11 — PBRealtimeSSEClient + FamilyRealtimeChannel', desc: 'actor URLSession streamed sur /api/realtime + parse SSE + PB_CONNECT handling + AsyncStream events + reconnect exponential 1s→30s + circuit breaker 5 échecs. FamilyRealtimeChannel @Observable @MainActor subscribe 3 collections filtrées family_id + throttle 500ms trigger syncEngine.syncNow(). PR#12.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'S12.12', title: '✅ S12.12 — LiveActivityToast in-app foreground', desc: 'LiveActivityToastCenter @Observable auto-dismiss 3s + Haptics.light. LiveActivityToast floating bottom material blur avec icon gradient. FamilyActivityWatcher invisible qui @Query EventChangeLog DESC + bootstrap onAppear + filter changedByUserID != currentUserID + < 10s → show toast. Wire overlay global RootView. PR#13.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.13', title: '✅ S12.13 — FamilySectionCard Réglages + retrait debug entry', desc: 'Card Réglages nom family + avatars strip parents/enfants + Inviter coparent (sheet InviteBabySheet) + Modifier profils (relance wizard) + Supprimer ma famille triple confirmation (BR15 cascade). Retire l\'entrée #if DEBUG S12.5. PR#14.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.14', title: '🎉 S12.14 — PB migration + SyncEngine Family/Parent/ChangeLog', desc: 'Migration JS PB : 4 collections (mnl_families/mnl_parents/mnl_event_change_logs/mnl_invites) + extension mnl_babies (family/nickname/sex) + mnl_events (updated_by_user_id) + index BR8 (family, changed_at DESC). SyncEngine+Family : 6 méthodes push/pull LWW + write-once EventChangeLog + order-aware syncNow. **SLICE 12 COMPLETE 14/14**. PR#15.', tags: ['critical', 'data'] },
 
     // Auto-sync remaining
     { col: 'todo', slice: 'S5.b.7b', title: 'S5.b.7b — Auto-sync timer 30s + retry sur ScenePhase.active', desc: 'Ajouter Timer.publish(every: 30, on: .main).autoconnect() + onChange(scenePhase == .active) → syncEngine.syncNow(). Débonce pour ne pas spammer.', tags: ['data'] },
