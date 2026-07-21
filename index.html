@@ -745,6 +745,12 @@ const CARD_META = {
   '✅ S12.12 — LiveActivityToast in-app foreground': { session: 6, theme: 'features', delivered: '2026-07-21' },
   '✅ S12.13 — FamilySectionCard Réglages + retrait debug entry': { session: 6, theme: 'features', delivered: '2026-07-21' },
   '🎉 S12.14 — PB migration + SyncEngine Family/Parent/ChangeLog': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '✅ S5.b.7b — Auto-sync timer 30s + ScenePhase.active retry': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '✅ S5.b.8 — Realtime SSE subscriptions PB (shipped as S12.11)': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '✅ S9.6-9.9 — CustomQuickActionBuilder + context menu hide/delete': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.11b — Wire FamilyRealtimeChannel dans MiniLoupsApp': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '🔥 Fix env overlay crash au launch': { session: 6, theme: 'core', delivered: '2026-07-21' },
+  '📸 5 screenshots iPhone 17 Pro Max session 6': { session: 6, theme: 'store', delivered: '2026-07-21' },
 };
 
 // =========================================================================
@@ -846,9 +852,13 @@ const DATA = {
     { col: 'done', slice: 'S12.14', title: '🎉 S12.14 — PB migration + SyncEngine Family/Parent/ChangeLog', desc: 'Migration JS PB : 4 collections (mnl_families/mnl_parents/mnl_event_change_logs/mnl_invites) + extension mnl_babies (family/nickname/sex) + mnl_events (updated_by_user_id) + index BR8 (family, changed_at DESC). SyncEngine+Family : 6 méthodes push/pull LWW + write-once EventChangeLog + order-aware syncNow. **SLICE 12 COMPLETE 14/14**. PR#15.', tags: ['critical', 'data'] },
 
     // Auto-sync remaining
-    { col: 'todo', slice: 'S5.b.7b', title: 'S5.b.7b — Auto-sync timer 30s + retry sur ScenePhase.active', desc: 'Ajouter Timer.publish(every: 30, on: .main).autoconnect() + onChange(scenePhase == .active) → syncEngine.syncNow(). Débonce pour ne pas spammer.', tags: ['data'] },
-    { col: 'todo', slice: 'S5.b.8', title: 'S5.b.8 — Realtime SSE subscriptions PB (<2s propagation)', desc: 'Extension SyncEngine+Realtime : URLSessionDataTask sur /api/realtime, SSE parsing lines, invalidate + repull sur event. Reconnect exponential backoff.', tags: ['data'] },
-    { col: 'todo', slice: 'S9', title: 'S9.3-9.10 — Custom quick actions (après S12)', desc: 'Slices restantes : custom action creator, BabyMultiPicker, hide/delete, timer override, photos toggle, long-press context menu.', tags: ['ui'] },
+    { col: 'done', slice: 'S5.b.7b', title: '✅ S5.b.7b — Auto-sync timer 30s + ScenePhase.active retry', desc: 'RootView .task async loop 30s + .onChange(scenePhase) trigger syncNow avec débonce 5s. Débloque le polling fallback quand SSE offline. PR#18.', tags: ['data'] },
+    { col: 'done', slice: 'S5.b.8', title: '✅ S5.b.8 — Realtime SSE subscriptions PB (shipped as S12.11)', desc: 'Livré en réalité par S12.11 (PBRealtimeSSEClient) + S12.11b (FamilyRealtimeStarter). URLSession streamed + parse SSE + reconnect exponential + AsyncStream + wire dans MiniLoupsApp. PR#12 + PR#20.', tags: ['data'] },
+    { col: 'done', slice: 'S9.6-9.9', title: '✅ S9.6-9.9 — CustomQuickActionBuilder + context menu hide/delete', desc: 'Fullscreen builder create/edit quick action (nom + icon + tint + timer/photos toggles). Long-press context menu QuickActionEditSheet rows (Modifier/Cacher/Supprimer). Photos toggle S9.9. PR#19.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.11b', title: '✅ S12.11b — Wire FamilyRealtimeChannel dans MiniLoupsApp', desc: 'Instancie FamilyRealtimeChannel dans init + inject env. FamilyRealtimeStarter overlay invisible watch startKey + start/stop channel selon état auth+family. PR#20.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'FIX', title: '🔥 Fix env overlay crash au launch', desc: 'Bug critique découvert en test sim (fresh install crash "No Observable object of type LiveActivityToastCenter"). Overlays attachés après .environment() ne reçoivent pas l\'env. Fix : .overlay avant .environment dans MiniLoupsApp. PR#21.', tags: ['critical'] },
+    { col: 'done', slice: 'STORE', title: '📸 5 screenshots iPhone 17 Pro Max session 6', desc: 'store/screenshots/20260721-1634-s12-slice-complete : 01-wizard-welcome + 02-home-timeline (+ FamilyActivityBanner empty) + 03-stats-tab + 04-compte-reglages + 05-planning-calendrier. Captured via xcrun simctl après fresh install + MINILOUPS_AUTO_DEMO. PR#22.', tags: ['ui'] },
+    { col: 'todo', slice: 'S9', title: 'S9.3-9.5 — BabyMultiPicker + dock long-press context (reste)', desc: 'BabyMultiPickerView pour linkedBabyIDs multi-select + long-press context menu depuis le dock Timeline directement (actuellement seulement dans QuickActionEditSheet).', tags: ['ui'] },
 
     // S9 Compliance
     { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission', tags: ['critical', 'legal'] },
