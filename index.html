@@ -63,6 +63,30 @@
     box-shadow: 0 4px 14px rgba(255,134,182,0.35);
   }
   .refresh-btn:hover { transform: translateY(-1px); }
+
+  /* --- View mode selector --- */
+  .view-selector {
+    display: flex; gap: 6px; padding: 8px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+  }
+  .view-selector button {
+    border: 0; background: transparent; cursor: pointer;
+    padding: 8px 16px; border-radius: 12px;
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 700; font-size: 13px; color: var(--muted);
+    transition: all 0.2s ease;
+  }
+  .view-selector button:hover { background: rgba(255,134,182,0.10); color: var(--ink); }
+  .view-selector button.active {
+    background: linear-gradient(90deg, var(--pink), var(--violet));
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(183,139,255,0.30);
+  }
+
+  /* --- Kanban board (status view) --- */
   .board {
     display: grid;
     grid-template-columns: repeat(5, minmax(240px, 1fr));
@@ -145,6 +169,159 @@
   .card .tag.money { background: rgba(255,169,77,0.25); color: #B45309; }
   .card .tag.growth { background: rgba(110,220,155,0.30); color: #1B5E20; }
   .card .tag.done-check { background: var(--green); color: #fff; }
+  .card .meta {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px dashed rgba(0,0,0,0.08);
+    font-size: 11px; color: var(--muted); font-weight: 700;
+  }
+  .card .meta .sess {
+    background: linear-gradient(90deg, rgba(255,134,182,0.20), rgba(183,139,255,0.20));
+    color: #6A1B9A;
+    padding: 2px 8px; border-radius: 999px; font-weight: 800;
+  }
+  .card .meta .dates { flex: 1; color: var(--muted); }
+  .card .meta .dates .arrow { color: rgba(0,0,0,0.25); margin: 0 4px; }
+  .card .meta .dates .started { color: var(--blue); }
+  .card .meta .dates .delivered { color: #1B5E20; }
+  .col.submit .card .meta {
+    border-top-color: rgba(255,255,255,0.20);
+    color: rgba(255,255,255,0.75);
+  }
+  .col.submit .card .meta .sess {
+    background: rgba(255,255,255,0.22); color: #fff;
+  }
+
+  /* --- Grouped views (Session / Theme) --- */
+  .grouped {
+    padding: 16px 40px 40px 40px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .group-card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease;
+  }
+  .group-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+  .group-header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px 24px; cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+  .group-header:hover { background: rgba(255,134,182,0.05); }
+  .group-header .chev {
+    width: 20px; text-align: center;
+    color: var(--muted); font-size: 14px;
+    transition: transform 0.2s ease;
+  }
+  .group-card.open .group-header .chev { transform: rotate(90deg); }
+  .group-header .badge-emoji {
+    font-size: 32px; line-height: 1;
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(255,134,182,0.15), rgba(183,139,255,0.15));
+    border-radius: 14px;
+  }
+  .group-header .title-block { flex: 1; }
+  .group-header .title-block .code {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800; font-size: 20px;
+    color: var(--ink); letter-spacing: -0.3px;
+  }
+  .group-header .title-block .subtitle {
+    color: var(--muted); font-weight: 600; font-size: 13px;
+    margin-top: 2px;
+  }
+  .group-header .stats-row {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .group-header .stats-row .pill {
+    background: rgba(0,0,0,0.06); padding: 4px 12px;
+    border-radius: 999px; font-weight: 700; font-size: 12px;
+    color: var(--muted);
+  }
+  .group-header .stats-row .pill.count {
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    color: #fff;
+  }
+  .group-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .group-card.open .group-body { max-height: 8000px; }
+  .group-body-inner { padding: 0 24px 20px 24px; }
+  .group-body h4 {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800; font-size: 14px;
+    margin: 16px 0 8px; padding-top: 8px;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-top: 1px dashed rgba(0,0,0,0.06);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .group-body h4:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+  .group-body h4 .h4-icon { font-size: 16px; }
+  .group-body h4 .h4-count {
+    background: rgba(0,0,0,0.06);
+    padding: 2px 10px; border-radius: 999px;
+    font-size: 11px; color: var(--muted); margin-left: 4px;
+  }
+  .item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 10px;
+  }
+  .item {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .item .col-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 6px;
+  }
+  .item .col-dot.done { background: var(--green); }
+  .item .col-dot.doing { background: var(--blue); }
+  .item .col-dot.todo { background: var(--muted); }
+  .item .col-dot.blocked { background: var(--orange); }
+  .item .col-dot.submit { background: var(--pink); }
+  .item .item-body { flex: 1; min-width: 0; }
+  .item .item-title {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 700; font-size: 13px; color: var(--ink); line-height: 1.3;
+  }
+  .item .item-slice {
+    display: inline-block;
+    font-size: 10px; padding: 1px 6px;
+    background: var(--yellow); color: var(--ink);
+    border-radius: 999px; font-weight: 700;
+    margin-right: 6px;
+  }
+  .item .item-desc {
+    font-size: 11px; color: var(--muted);
+    margin-top: 4px; line-height: 1.4;
+  }
+  .item .item-meta {
+    font-size: 10px; color: var(--muted); margin-top: 4px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .item .item-meta .mp {
+    padding: 1px 6px; border-radius: 999px;
+    background: rgba(0,0,0,0.05); font-weight: 600;
+  }
+  .item .item-meta .mp.session {
+    background: linear-gradient(90deg, rgba(255,134,182,0.15), rgba(183,139,255,0.15));
+    color: #6A1B9A; font-weight: 700;
+  }
+
   footer {
     text-align: center; padding: 20px;
     color: var(--muted); font-size: 12px;
@@ -164,6 +341,161 @@
   .kpi-strip .kpi {
     font-size: 12px; color: var(--muted); font-weight: 700;
   }
+  /* --- Current session hero --- */
+  .current-hero {
+    margin: 20px 40px 0;
+    background: linear-gradient(135deg, rgba(255,134,182,0.12), rgba(183,139,255,0.12), rgba(77,150,255,0.10));
+    border: 1px solid rgba(183,139,255,0.20);
+    border-radius: 22px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: center;
+  }
+  .current-hero .live-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 0 rgba(110,220,155,0.7);
+    animation: pulse 2s infinite;
+    margin-left: 4px;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(110,220,155,0.7); }
+    70%  { box-shadow: 0 0 0 12px rgba(110,220,155,0); }
+    100% { box-shadow: 0 0 0 0 rgba(110,220,155,0); }
+  }
+  .current-hero .hero-emoji {
+    font-size: 44px; line-height: 1;
+    width: 68px; height: 68px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--pink), var(--violet));
+    border-radius: 18px; color: #fff;
+    box-shadow: 0 8px 20px rgba(183,139,255,0.30);
+  }
+  .current-hero .hero-body { min-width: 0; }
+  .current-hero .hero-eyebrow {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase;
+    font-weight: 800; color: #6A1B9A;
+  }
+  .current-hero .hero-title {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800; font-size: 24px; margin: 4px 0 6px;
+    letter-spacing: -0.3px;
+  }
+  .current-hero .hero-sub { color: var(--muted); font-weight: 600; font-size: 13px; }
+  .current-hero .hero-chips {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+  }
+  .current-hero .hero-chips .chip {
+    background: rgba(255,255,255,0.75);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--ink);
+  }
+  .current-hero .hero-chips .chip .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .current-hero .hero-chips .chip .dot.doing { background: var(--blue); }
+  .current-hero .hero-chips .chip .dot.todo  { background: var(--muted); }
+  .current-hero .hero-stats {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+    font-family: 'Baloo 2'; font-weight: 800;
+  }
+  .current-hero .hero-stats .big {
+    font-size: 40px; line-height: 1;
+    background: linear-gradient(135deg, var(--pink), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .current-hero .hero-stats .lbl {
+    font-family: 'Nunito'; font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  @media (max-width: 720px) {
+    .current-hero { grid-template-columns: 1fr; text-align: center; }
+    .current-hero .hero-stats { align-items: center; }
+  }
+
+  /* --- Session recap blocks (testable / shipped / screenshots) --- */
+  .recap-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 0 0 8px;
+  }
+  @media (max-width: 720px) {
+    .recap-blocks { grid-template-columns: 1fr; }
+  }
+  .recap-block {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 16px;
+  }
+  .recap-block .rb-title {
+    font-family: 'Baloo 2'; font-weight: 800; font-size: 13px;
+    color: var(--ink);
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .recap-block.testable { background: linear-gradient(135deg, rgba(77,150,255,0.08), rgba(110,220,155,0.06)); border-color: rgba(77,150,255,0.18); }
+  .recap-block.testable .rb-title { color: #1E40AF; }
+  .recap-block.shipped  { background: linear-gradient(135deg, rgba(110,220,155,0.10), rgba(255,212,59,0.08)); border-color: rgba(110,220,155,0.20); }
+  .recap-block.shipped  .rb-title { color: #1B5E20; }
+  .recap-block ul { margin: 0; padding-left: 20px; font-size: 13px; color: #374151; line-height: 1.5; }
+  .recap-block ul li { margin: 3px 0; }
+  .recap-block p { margin: 0; font-size: 13px; color: #374151; line-height: 1.5; }
+
+  .screenshots-strip {
+    display: flex; gap: 12px; overflow-x: auto;
+    padding: 8px 4px; margin: 8px 0 0;
+    scroll-snap-type: x mandatory;
+  }
+  .screenshots-strip::-webkit-scrollbar { height: 8px; }
+  .screenshots-strip::-webkit-scrollbar-thumb { background: rgba(183,139,255,0.3); border-radius: 4px; }
+  .screenshots-strip .shot {
+    flex: 0 0 auto; scroll-snap-align: start;
+    width: 180px; text-align: center;
+  }
+  .screenshots-strip .shot img {
+    width: 100%; height: 320px; object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    transition: transform 0.2s ease;
+    cursor: zoom-in;
+    background: #fff;
+  }
+  .screenshots-strip .shot img:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
+  .screenshots-strip .shot .cap {
+    margin-top: 6px; font-size: 11px; color: var(--muted);
+    font-weight: 700;
+  }
+
+  /* Lightbox for full-size screenshot */
+  .lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15,17,26,0.85);
+    z-index: 999;
+    align-items: center; justify-content: center;
+    padding: 40px;
+    backdrop-filter: blur(20px);
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .lightbox .close {
+    position: absolute; top: 20px; right: 24px;
+    background: rgba(255,255,255,0.15); color: #fff;
+    border: 0; width: 44px; height: 44px; border-radius: 22px;
+    font-size: 20px; cursor: pointer; font-weight: 700;
+  }
+
   @media (max-width: 1200px) { .board { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 720px) { .board { grid-template-columns: 1fr; } }
 </style>
@@ -192,7 +524,22 @@
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
 </div>
 
-<div class="board" id="board"></div>
+<div id="current-hero-slot"></div>
+
+<div style="padding: 20px 40px 0 40px; display: flex; justify-content: center;">
+  <div class="view-selector">
+    <button data-view="session" class="active">📅 Par session</button>
+    <button data-view="theme">🎨 Par thème</button>
+    <button data-view="status">🎯 Par statut</button>
+  </div>
+</div>
+
+<div id="view-container"></div>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
 
 <footer>
   Fais tourner <code>sh scripts/refresh-roadmap.sh</code> pour régénérer la roadmap depuis le code.<br/>
@@ -200,6 +547,209 @@
 </footer>
 
 <script>
+// =========================================================================
+// SESSIONS — dates historiques dérivées de git log --all --pretty=format
+// =========================================================================
+const SESSIONS = {
+  1: {
+    code: 'S01', date: '2026-07-02', label: 'Kickoff',
+    desc: 'Scaffolding projet + première tranche onboarding',
+    testable: [
+      'Fresh install → SIWA en Onboarding',
+      'Ajouter ton premier bébé (nom, DoB, couleur)',
+      'Long-press sur avatar bébé pour ouvrir le picker',
+    ],
+    shipped: 'Fondation projet : SIWA + AddBaby + BabyPicker + palette Kids de base. App bootstrap fonctionnel end-to-end.',
+    screenshots: [
+      { src: '../store/screenshots/20260717-2149/01-onboarding-siwa-6.9.png', cap: 'Onboarding SIWA (S04 shot)' },
+    ],
+  },
+  2: {
+    code: 'S02', date: '2026-07-03', label: 'Foundations UI',
+    desc: 'Timeline + Add-Event + Croissance en 1 session',
+    testable: [
+      'Log un event (biberon, sieste, couche) depuis Quick Actions',
+      'Voir la timeline live avec chronos qui tournent',
+      'Ouvrir Croissance : BabyDetail + charts + radar 5-axes + RecordShelf',
+      'Naviguer entre les onglets via tab bar',
+    ],
+    shipped: 'Timeline live, Add-Event flow complet, payload editors polymorphiques, tab bar nav, Croissance data + records.',
+    screenshots: [],
+  },
+  3: {
+    code: 'S03', date: '2026-07-15', label: 'Paywall + Santé + RGPD',
+    desc: 'S6 DS Kids, S7 paywall StoreKit, S8 santé, RGPD, store prep',
+    testable: [
+      'Passer à Pro via PaywallView (Réglages → Passer à Pro), StoreKit sandbox',
+      'Ajouter une maladie + entries + RDV médecin dans Santé',
+      'Test RGPD : Export data JSON + Delete account',
+      'Voir splash animé mongolfière au fresh launch',
+      'Swipe left/right pour changer de bébé',
+    ],
+    shipped: 'DS Kids complet (Baloo 2 + Nunito), paywall StoreKit 2 + gates free tier, tab Santé full MediTrack pattern, RGPD compliant (consent + export + deletion), App Store metadata FR/EN.',
+    screenshots: [],
+  },
+  4: {
+    code: 'S04', date: '2026-07-17', label: 'Co-parent sync + UX refresh',
+    desc: 'S5 sync PocketBase end-to-end, splash refresh, timeline pixel-perfect, S9.1 QuickAction',
+    testable: [
+      'Long-press avatar bébé → "Inviter le coparent" → generate URL + copy + share',
+      'Deep link miniloups:// → AcceptInviteView flow',
+      'Voir SyncStatusBadge dans header Timeline (dot coloré + label)',
+      'Timeline pixel-perfect vs mockup Khloé + BabySwipeCoachOverlay',
+      'Splash mongolfière transparente + parallax 3 layers',
+      'Edit une quick action + custom SF Symbol picker (40 curated)',
+    ],
+    shipped: 'S5 co-parent sync end-to-end (PocketBase local Docker + Swift layer + SIWA→PB bridge + invite deep link + AcceptInviteView), splash refresh, timeline refonte pixel-perfect, S9.1 QuickActionModel + Seeder + IconPicker.',
+    screenshots: [
+      { src: '../store/screenshots/20260717-2149/02-home-timeline-6.9.png', cap: 'Home Timeline refonte' },
+      { src: '../store/screenshots/20260717-2149/03-splash-mongolfiere-6.9.png', cap: 'Splash mongolfière parallax' },
+      { src: '../store/screenshots/20260717-2149/01-onboarding-siwa-6.9.png', cap: 'Onboarding SIWA' },
+    ],
+  },
+  5: {
+    code: 'S05', date: '2026-07-20', label: 'Home refonte + Backend adoption',
+    desc: 'S10 home+FAB, S11 impl santé, spec S12-S13, revert Supabase, S13 impl PocketBase Miniloo pattern',
+    testable: [
+      'Nouvelle nav : Accueil · Calendrier · FAB [+] · Stats · Mon compte',
+      'Tap FAB central → radial menu 5 bulles + backdrop flou + haptics firm',
+      'Home épurée : header + date navigator + daily summary 4 tuiles',
+      'Santé refonte MediTrack : dashboard médical + illness detail avec tabs Timeline/Medical/Fever/Analysis',
+      'Quick actions "maladie en cours" : 4 raccourcis température/symptôme/photos/RDV en 1 tap',
+      'RDV médecin avec toggle "aussi dans Apple Calendar" (EventKit)',
+      'Sync PocketBase via nouveau PocketBaseBackend actor (S13)',
+    ],
+    shipped: 'Slice 10 home refonte + FAB radial + Haptics centralisés, Slice 11 impl santé MediTrack complète, spec S12 + S13 validés, override Supabase revert, Slice 13 impl : NetKit + PocketBaseBackend actor Swift 6 + IdempotencyKey + refactor SyncEngine sur protocol seam.',
+    screenshots: [],
+  },
+  6: {
+    code: 'S06', date: '2026-07-21', label: 'Slice 12 — Live parent sync + Docs',
+    desc: '10 sub-slices S12 shipped en 1 session (S12.1→S12.10) + roadmap web + doc archi + gitflow',
+    testable: [
+      'Fresh install → SIWA (ou MINILOUPS_AUTO_DEMO=1) → wizard 6-step (welcome → parent1 → parent2Choice → parent2Profile? → babies → done) → Timeline',
+      'Vérifier auto-migration : existing SwiftData avec baby standalone → boot → Family auto-créée + Parent + re-link babies → Timeline direct (aucun wizard forcé)',
+      'Ouvrir un event dans EventDetailView → scroll bas → historique avec rail dots colorés + avatars + phrases FR + timestamps relatifs',
+      'Home → FamilyActivityBanner en haut avec les 3 dernières activités famille + tap → EventDetailView',
+      'Home → tap "Voir tout" sur FamilyActivityBanner → FamilyActivityView fullscreen avec filter chip par baby',
+      'Réglages → 🧪 Debug Slice 12 (#if DEBUG) → réouvrir le wizard sans reset',
+      'Supprimer un event → EventChangeLog log(deleted) écrit + row apparaît dans historique',
+      'Ouvrir la roadmap sur https://philthestyle.github.io/miniloups-roadmap/',
+      'Doc archi HTML sur ~/Desktop/MiniLoups-Architecture.html',
+    ],
+    shipped: 'Slice 12 fondation + wire + activity feed en 10 PRs (S12.1→S12.10) : 3 @Model + activity logger + wizard onboarding 6-step + commit SwiftData + auto-migration BR13 + historique EventDetail + activity banner Home + view fullscreen filter par baby. Roadmap web publiée sur GH Pages. Gitflow strict (develop default, feat/* PR vers develop, opérateur merge). Doc HTML archi Desktop.',
+    screenshots: [],
+  },
+};
+
+// =========================================================================
+// THEMES — regroupement par domaine
+// =========================================================================
+const THEMES = {
+  design:   { icon: '🎨', label: 'Design & UI',        desc: 'Palettes, composants, animations, refonte visuelle' },
+  features: { icon: '⚡', label: 'Features produit',   desc: 'Slices verticaux : Timeline, Croissance, Santé, Paywall, Co-parent…' },
+  data:     { icon: '💾', label: 'Data & Sync',        desc: 'SwiftData models, PocketBase backend, sync, IdempotencyKey' },
+  legal:    { icon: '🔒', label: 'Legal & RGPD',       desc: 'Consentement, deletion, export, mentions, DPO' },
+  store:    { icon: '🛒', label: 'Store & Marketing',  desc: 'App Store metadata, screenshots, App Icon, growth, ads' },
+  core:     { icon: '⚙️', label: 'Core / App shell',   desc: 'Architecture, tooling, chore, personas Shikki' },
+};
+
+// =========================================================================
+// CARD_META — mapping title → { session, theme, started, delivered }
+// Dérivé de git log + connaissance projet. `delivered` = date du commit,
+// `started` = idem si single-session, sinon date de démarrage réelle.
+// =========================================================================
+const CARD_META = {
+  // ---- Session 1 (2026-07-02) ----
+  'Onboarding + SIWA + AddBaby + BabyPicker': { session: 1, theme: 'features', delivered: '2026-07-02' },
+  // ---- Session 2 (2026-07-03) ----
+  'Timeline live + Quick Actions + Chronos': { session: 2, theme: 'features', delivered: '2026-07-03' },
+  'Tab bar + Add-Event + Event-Detail + Payload editors': { session: 2, theme: 'features', delivered: '2026-07-03' },
+  'Croissance : BabyDetail + Charts + Radar 5-axes + RecordShelf': { session: 2, theme: 'features', delivered: '2026-07-03' },
+  // ---- Session 3 (2026-07-15) ----
+  'DS Kids + Timeline DailyCocoon + Photos max 5': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'Splash animé montgolfière': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'PaywallView beaugoss': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'StoreKit 2 config + service': { session: 3, theme: 'data', delivered: '2026-07-15' },
+  'PaywallGate + trigger Réglages': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'Gate 2e bébé (BabyPicker) + historique >30j (Timeline teaser)': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'Account Deletion in-app (Réglages)': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Data Export in-app (RGPD Art. 20)': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Consentement parental au signup': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Liens légaux in-app (Réglages > Légal)': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Draft Privacy Policy FR': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Draft Terms of Service FR': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Draft Mentions Légales': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'Registre des traitements (RGPD Art. 30)': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'NSPhotoLibraryUsageDescription + Camera précis': { session: 3, theme: 'legal', delivered: '2026-07-15' },
+  'App Store metadata FR': { session: 3, theme: 'store', delivered: '2026-07-15' },
+  'App Store metadata EN': { session: 3, theme: 'store', delivered: '2026-07-15' },
+  'Privacy Nutrition Label matrix': { session: 3, theme: 'store', delivered: '2026-07-15' },
+  'Script capture screenshots xcrun simctl': { session: 3, theme: 'store', delivered: '2026-07-15' },
+  'App Icon 1024 finale — sticker montgolfière officielle du DS': { session: 3, theme: 'store', delivered: '2026-07-15' },
+  'Header shrink-on-scroll (Home)': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'Filter bar horizontale (Home)': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'Fix isPro immédiat post-achat': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'Swipe left/right pour changer de bébé': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'Port composants MayaFitStats → KidsGauges': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'Croissance enrichie : 4 gauges + weekly bars': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'Spec Slice 8 — Onglet Santé (inspiré MediTrack)': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'S8 impl full — Santé tab complète': { session: 3, theme: 'features', delivered: '2026-07-15' },
+  'KidsActionButton — crâne pirate ☠️🦴 + rainbow smile 🌈😊': { session: 3, theme: 'design', delivered: '2026-07-15' },
+  'Décision backup photos : sync PocketBase + s3.obyw.one dès le Free': { session: 3, theme: 'data', delivered: '2026-07-15' },
+  'App Icon 1024x1024': { session: 3, theme: 'store', delivered: '2026-07-14' },
+  'Compte Apple Developer Program (99€/an)': { session: 3, theme: 'store', delivered: '2026-07-14' },
+  // ---- Session 4 (2026-07-17) ----
+  'Home refresh — gradient bleu/violet + actions rapides pastel élevé + halo': { session: 4, theme: 'design', delivered: '2026-07-17' },
+  'Splash refresh — mongolfière transparente + parallax 3 layers': { session: 4, theme: 'design', delivered: '2026-07-17' },
+  'BabySwipeCoachOverlay (1er lancement)': { session: 4, theme: 'design', delivered: '2026-07-17' },
+  'Arrows swipe au bottom + edge glow arrondi': { session: 4, theme: 'design', delivered: '2026-07-17' },
+  'Refonte Timeline tab — pixel-perfect vs mockup Khloé': { session: 4, theme: 'design', delivered: '2026-07-17' },
+  'S9.1 — QuickActionModel @Model + Seeder': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  'S9.2 — Edit sheet + IconPicker (40 SF Symbols curated)': { session: 4, theme: 'features', delivered: '2026-07-17' },
+  'Spec Slice 9 — Custom Quick Actions (Option B full SwiftData)': { session: 4, theme: 'features', delivered: '2026-07-17' },
+  'Reference PocketBase multi-env pattern (canon Shikki)': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ 6 commits atomiques session 17/07 (afe33fc → 25d26b0)': { session: 4, theme: 'core', delivered: '2026-07-17' },
+  '✅ PocketBase deployed local (Docker + colima)': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ Bouton "Inviter le coparent" wired dans BabyPickerView': { session: 4, theme: 'features', delivered: '2026-07-17' },
+  '✅ S5.a — Infra PocketBase locale prête (à déployer)': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ S5.b — Swift layer (6 fichiers Services/Sync/)': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ S5.b.5 — SyncEngine push/pull impl (SwiftData ↔ PB) bidirectionnel': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ S5.b.5.e — SIWA→PB bridge wired + bump updatedAt': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ S5.b.7 — SyncEngine + Badge wired dans header Timeline': { session: 4, theme: 'data', delivered: '2026-07-17' },
+  '✅ S5.c — Co-parent invite flow (deep link + AcceptInviteView + InviteBabySheet)': { session: 4, theme: 'features', delivered: '2026-07-17' },
+  // ---- Session 5 (2026-07-20) ----
+  '✅ Slice 10 — Home refonte + FAB central + Radial Menu': { session: 5, theme: 'features', delivered: '2026-07-20' },
+  '✅ Haptics.swift centralisé — feedback firm (.rigid) sur ~20 CTAs': { session: 5, theme: 'design', delivered: '2026-07-20' },
+  '✅ Spec Slice 11 — Santé Refonte MediTrack (validé user 2026-07-20)': { session: 5, theme: 'features', delivered: '2026-07-20' },
+  '✅ Spec Slice 12 — Famille + live parent sync + audit log (PocketBase-based)': { session: 5, theme: 'features', delivered: '2026-07-20' },
+  '✅ Spec Slice 13 — Adoption pattern PocketBase Miniloo + NetKit HTTP': { session: 5, theme: 'data', delivered: '2026-07-20' },
+  '↩️ Override #3 REVERTED — Supabase abandonné, on garde PocketBase': { session: 5, theme: 'data', delivered: '2026-07-20' },
+  '✅ Slice 10 — Test visuel + commit final': { session: 5, theme: 'features', started: '2026-07-20', delivered: '2026-07-20' },
+  '✅ Slice 11 — Impl Santé Refonte MediTrack': { session: 5, theme: 'features', started: '2026-07-20', delivered: '2026-07-20' },
+  '✅ Slice 13 — Impl adoption PocketBase Miniloo + NetKit': { session: 5, theme: 'data', started: '2026-07-20', delivered: '2026-07-20' },
+  // ---- Session 6 (2026-07-21) — Slice 12 impl marathon ----
+  '✅ S12.1 — Data models (Family + Parent + EventChangeLog + BabySex)': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '✅ S12.2 — ActivityLogger service + hook EventStarter': { session: 6, theme: 'data', delivered: '2026-07-21' },
+  '✅ S12.3 — AvatarView + EmojiPickerGrid + AvatarPickerView': { session: 6, theme: 'design', delivered: '2026-07-21' },
+  '✅ S12.4 — FamilyWizardCoordinator + WizardStepView chrome': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.5 — Parent steps + WelcomeStep + FamilyWizardHost + debug entry': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.6 — BabyFormView + SexPickerRow + BabyStepList': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.7 — Wire wizard post-SIWA + FamilyWizardCommitter + FamilyMigrator (BR13)': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.8 — AudiencePhraseBuilder + EventHistorySection + delete audit': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  '✅ S12.9-10 — FamilyActivityBanner + FamilyActivityView + Fetcher + Row': { session: 6, theme: 'features', delivered: '2026-07-21' },
+  // ---- DOING / TODO cards avec started dates ----
+  'Capture des 6 screenshots (iPhone 6.9") — 3/6 fait': { session: 4, theme: 'store', started: '2026-07-17' },
+  'Test paywall dans sim': { session: 3, theme: 'features', started: '2026-07-15' },
+  'Feedback header + filter row (test visuel)': { session: 3, theme: 'design', started: '2026-07-15' },
+  '📡 S12.11 — PBRealtimeSSEClient + FamilyRealtimeChannel (<2s propagation)': { session: 6, theme: 'data' },
+  '🍞 S12.12 — LiveActivityToast in-app foreground': { session: 6, theme: 'features' },
+  '⚙️ S12.13 — FamilySectionCard Réglages + cleanup debug': { session: 6, theme: 'features' },
+  '🗄 S12.14 — Migration PB + push/pull SyncEngine + tests intégration': { session: 6, theme: 'data' },
+};
+
+// =========================================================================
+// DATA — cards (avec col updates pour S10/S11/S13 shipped)
+// =========================================================================
 const DATA = {
   columns: [
     { key: 'todo',    title: '📋 TODO',    color: 'muted' },
@@ -241,76 +791,74 @@ const DATA = {
     { col: 'done', slice: 'UX', title: 'Port composants MayaFitStats → KidsGauges', desc: 'KidsCircularGauge + KidsWeeklyBars + KidsGaugeCard adaptés KidsPalette + Baloo/Nunito. Réutilisables partout.', tags: ['ui'] },
     { col: 'done', slice: 'UX', title: 'Croissance enrichie : 4 gauges + weekly bars', desc: 'BabyDetailView : row 2x2 gauges Sommeil %, Repas, Couches, Balades avec trend 7j en dessous. En plus des Records + Radar + Charts existants.', tags: ['ui'] },
     { col: 'done', slice: 'S8', title: 'Spec Slice 8 — Onglet Santé (inspiré MediTrack)', desc: 'features/slice-8-sante-tab.md — 11 AC, modèles Illness/IllnessEntry/DoctorVisit/Prescription/Vaccination/PregnancyEvent, dashboard + list + detail + analysis, mode grossesse. ~4-6h dev.', tags: ['data'] },
-    { col: 'done', slice: 'S8', title: 'S8 impl full — Santé tab complète', desc: '15 fichiers : 6 @Model (Illness, IllnessEntry, DoctorVisit, Prescription, Vaccination, PregnancyEvent) + enums (IllnessCategory ×16, SymptomType ×19, PractitionerType, PregnancyEventType) + SanteView + SanteDashboardView (annual counters, active banner, upcoming visits/vaccines) + IllnessListScreen (filter status + category) + IllnessDetailScreen (entries timeline + visits + prescriptions + mark recovered) + AddIllnessSheet + AddIllnessEntrySheet (symptoms picker cycle severity) + AddDoctorVisitSheet + PregnancyView + HealthAnalysisView (bar chart 12m + pie chart) + HealthStatsCalculator + PaywallTrigger.medicalOverLimit (free = max 3 illnesses). Build vert.', tags: ['critical', 'data'] },
-    { col: 'done', slice: 'UX', title: 'KidsActionButton — crâne pirate ☠️🦴 + rainbow smile 🌈😊', desc: 'Composant unifié 3 variants (primary rainbow gradient / secondary outlined / destructive dark ☠️). Appliqué aux submits AddIllness/Visit/Entry + delete IllnessDetail. Haptic + shadow color-matched.', tags: ['ui'] },
-    { col: 'done', slice: 'ARCHI', title: 'Décision backup photos : sync PocketBase + s3.obyw.one dès le Free', desc: 'Free ET Pro passent par PB+S3 pour multi-device backup. Différenciation Free vs Pro = quota/retention. Détails dans project_photo_backup_strategy memory.', tags: ['data', 'money'] },
+    { col: 'done', slice: 'S8', title: 'S8 impl full — Santé tab complète', desc: '15 fichiers : 6 @Model (Illness, IllnessEntry, DoctorVisit, Prescription, Vaccination, PregnancyEvent) + enums + SanteView + SanteDashboardView + IllnessListScreen + IllnessDetailScreen + AddIllnessSheet + AddIllnessEntrySheet + AddDoctorVisitSheet + PregnancyView + HealthAnalysisView + HealthStatsCalculator + PaywallTrigger.medicalOverLimit. Build vert.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'UX', title: 'KidsActionButton — crâne pirate ☠️🦴 + rainbow smile 🌈😊', desc: 'Composant unifié 3 variants (primary rainbow / secondary outlined / destructive ☠️). Appliqué aux submits AddIllness/Visit/Entry + delete IllnessDetail.', tags: ['ui'] },
+    { col: 'done', slice: 'ARCHI', title: 'Décision backup photos : sync PocketBase + s3.obyw.one dès le Free', desc: 'Free ET Pro passent par PB+S3 pour multi-device backup. Différenciation Free vs Pro = quota/retention.', tags: ['data', 'money'] },
 
-    // -------- Session 2026-07-17 : UI refresh + S9.1 --------
-    { col: 'done', slice: 'UX', title: 'Home refresh — gradient bleu/violet + actions rapides pastel élevé + halo', desc: 'BabyBackground : gradient light crème → bleu périwinkle #C7D6FB / violet #DCCFF3 / blanc cassé #F6F1E9. ActionsRapidesSection : cercle blanc translucide 54pt + halo tint 28% blurred + shadow tint 30%. Commit afe33fc.', tags: ['ui'] },
-    { col: 'done', slice: 'UX', title: 'Splash refresh — mongolfière transparente + parallax 3 layers', desc: 'BalloonSticker.png remplacé (1024×1536 transparent — plus de rectangle bleu baké). Sky gradient nocturne 3-stops #0B1A4D→#1E3A8A→#2E5AC5. 3 couches parallax (far/mid/foreground, ratio vitesse 6×) + oscillation verticale sinusoïdale + contra-drift mongolfière -10pt.', tags: ['ui'] },
-    { col: 'done', slice: 'UX', title: 'BabySwipeCoachOverlay (1er lancement)', desc: 'Fullscreen frosted overlay .ultraThinMaterial avec 2 mains animées + CTA "J\'ai compris" gradient violet→bleu. Persisté via @AppStorage("babySwipeCoachSeen"). Auto-dismiss dès qu\'un swipe réel est effectué.', tags: ['ui'] },
-    { col: 'done', slice: 'UX', title: 'Arrows swipe au bottom + edge glow arrondi', desc: 'Boutons chevron gauche/droite passent de vertical-center à bottomLeading/bottomTrailing padding.bottom 24pt (proches du tab bar → suggère swipe depuis le bas). Edge glow : RoundedRectangle cornerRadius 34 avec padding vertical 40pt, opacité forte à l\'edge (bug côté trailing fixé).', tags: ['ui'] },
-    { col: 'done', slice: 'UX', title: 'Refonte Timeline tab — pixel-perfect vs mockup Khloé', desc: 'Header : nom bébé H1 sans "Bonjour" + weather chip 24°C. Stats : 4 cards horizontales (Couche/Repas/Sommeil 2h15/Bain 1). Filter bar + bouton "+". EventRow refactor : time gauche + colored dot rail + icon circle + title/subtitle + avatar+Papa/Maman à droite. Actions rapides = bottom card élevée avec drag handle + edit pencil top-right + 3x2 grid pastel tinted.', tags: ['ui'] },
-    { col: 'done', slice: 'S9', title: 'S9.1 — QuickActionModel @Model + Seeder', desc: 'Migration SwiftData (Option B) : QuickActionModel remplace enum QuickAction figé. Seeder idempotent insère les 6 built-ins au 1er lancement (diaper/bottle/breastLeft/breastRight/sleep/bath). Champs : name, iconSFSymbol, tintCategory, timerEnabled, photosEnabled, linkedBabyIDs, isBuiltIn/builtInKey, isHidden, order, lastUsedAt. EventKind.fromBuiltInKey() reverse map. Prêt pour sync PB S5.', tags: ['data'] },
-    { col: 'done', slice: 'S9', title: 'S9.2 — Edit sheet + IconPicker (40 SF Symbols curated)', desc: 'QuickActionEditSheet : NavigationStack + List avec name TextField + tap icône pour IconPickerView. IconPickerCatalog : 6 groupes (Alimentation/Sommeil/Hygiène/Activités/Santé/Émotions) × ~40 icônes total. Bouton "Réinitialiser les built-ins" restaure canonique. Reorder via EditButton.', tags: ['ui', 'data'] },
-    { col: 'done', slice: 'SPEC', title: 'Spec Slice 9 — Custom Quick Actions (Option B full SwiftData)', desc: 'features/slice-9-custom-quick-actions.md — 14 BR, 10 sub-slices, TDD test list. Décision archi Option B (Full SwiftData migration) confirmée par user 2026-07-17. Slices 9.3-9.10 (custom action creator, multi-baby, hide/delete, timer override, photos toggle) → APRÈS S5 pour hériter de la sync gratuitement.', tags: ['data'] },
-    { col: 'done', slice: 'MEMORY', title: 'Reference PocketBase multi-env pattern (canon Shikki)', desc: '~/.claude/…/memory/reference_pocketbase_env_pattern.md — WabiSabi = source of truth (3 envs dev/preprod/prod, Docker+Caddy TLS, resolved via Distribution.current, AppConfig server-driven). MiniLoups adapt = 2 envs (staging nuc-dev + prod obyw-one).', tags: ['data'] },
-
-    // -------- Session 2026-07-20 : slice-10 Home refonte + FAB radial + Haptics + slice-11 spec --------
-    { col: 'done', slice: 'SLICE-10', title: '✅ Slice 10 — Home refonte + FAB central + Radial Menu', desc: '8 sub-slices livrées. Nouvelle IA nav : Accueil · Calendrier · [FAB +] · Stats · Mon compte (Croissance+Santé fusionnés sous Stats via segmented picker). FAB flottant gradient violet→bleu, tap ouvre radial menu 5 bulles + backdrop flou + "Gérer mes actions" pill + close X central. Home épurée : HomeHeaderView (nom bébé H1 + weather chip 24°C + SyncStatusBadge) · DateNavigatorView (‹ jour › + calendar sheet DatePicker graphical) · DailySummaryCard (4 tuiles pastel Couches/Repas/Sommeil/Bain) · TimelineEmptyStateView (illustration montgolfière + arbres). Cleanup : 5 anciens fichiers Timeline supprimés (ActionsRapidesSection, QuickActionsBar, TimelineDateCarousel, TimelineHeaderView, TodayStatsView). Build vert Xcode 27 Beta 2 / iOS 17 sim.', tags: ['ui', 'critical'] },
-    { col: 'done', slice: 'UX', title: '✅ Haptics.swift centralisé — feedback firm (.rigid) sur ~20 CTAs', desc: 'Nouveau DesignSystem/Haptics.swift @MainActor : firm() = .rigid (snap net), medium/light/soft/heavy, selection, success/warning/error. Bug fix KidsActionButton : .sensoryFeedback(trigger: isEnabled) déclenchait au changement d\'état, pas au tap → remplacé par Haptics.firm() dans l\'action. Wired firm sur : FAB central, bulles radiales (+ success/error sur EventStarter), Stop event (EventDetail + ActiveEventCard), Paywall CTA (+ success/error retour achat), SIWA Onboarding (+ success/error), Réglages Voir les offres/Gérer abonnement/Export/Delete, InviteBabySheet copier lien, Stats tab switch, DateNavigator calendar. Warning haptics sur alertes Supprimer, error sur delete compte 2e palier. Refactor cohérence : BabySwipeGesture/PlanningCalendarCard/IconPickerView/TimelineFilterBar utilisent maintenant Haptics.*.', tags: ['ui'] },
-    { col: 'done', slice: 'SPEC', title: '✅ Spec Slice 11 — Santé Refonte MediTrack (validé user 2026-07-20)', desc: 'features/slice-11-sante-refonte-meditrack.md — 12 sections, décisions archi actées : (1) Style KidsPalette/KidsFont/KidsActionButton, zero DS.Colors ; (2) RDV médecin toggle "aussi dans Apple Calendar" (SwiftData source of truth + EventKit secondary sync + NSCalendarsUsageDescription) ; (3) Photos SwiftData local via IllnessEntry.photoDatas déjà en place, sync PocketBase reportée. Périmètre : porter 6-7 écrans MediTrack (Dashboard médical, Illness detail, tabs Timeline/Medical/Fever/Analysis, AddIllness/AddEntry/AddVisit/AddPrescription) + concept phare = quick actions "maladie en cours" 4 raccourcis (température, symptôme, photos, RDV) accessibles en 1 tap depuis n\'importe où.', tags: ['data', 'ui'] },
-
-    // -------- DOING : Slice 11 — Santé refonte MediTrack --------
-    // (Ready to start after slice-10 commit)
-
-    // -------- Session 2026-07-17 evening : commits + PB deploy + screenshots --------
-    { col: 'done', slice: 'CHORE', title: '✅ 6 commits atomiques session 17/07 (afe33fc → 25d26b0)', desc: 'personas + splash + timeline refonte + s9.1 data + s5 (infra+swift+invite) + roadmap + invite button + PB migration fix + screenshots. main clean, +10 commits ahead of origin.', tags: [] },
-    { col: 'done', slice: 'S5.a', title: '✅ PocketBase deployed local (Docker + colima)', desc: 'colima start (2 CPU/4G/20G) + docker compose build + init-instance.sh dev → PocketBase v0.25.3 up sur http://localhost:8090. Admin admin@miniloups.app créé, 5 collections mnl_* (babies/events/shares/app_config/quick_actions) créées + healthy. Smoke test end-to-end : signup user via /api/collections/users/records → auth-with-password → POST mnl_babies (name Khloé, color_hex #FF86B6) → 200 OK.', tags: ['data'] },
-    { col: 'done', slice: 'S5.c', title: '✅ Bouton "Inviter le coparent" wired dans BabyPickerView', desc: 'Long-press sur baby avatar → contextMenu → "Inviter le coparent" (person.2.badge.plus.fill) → InviteBabySheet(baby:). @State invitingBaby + .sheet(item:). Remplace placeholder "Partager" disabled.', tags: ['ui'] },
+    // -------- Session 2026-07-17 : UI refresh + S9.1 + S5 --------
+    { col: 'done', slice: 'UX', title: 'Home refresh — gradient bleu/violet + actions rapides pastel élevé + halo', desc: 'BabyBackground gradient light crème → bleu périwinkle #C7D6FB / violet #DCCFF3 / blanc cassé #F6F1E9. ActionsRapidesSection : cercle blanc translucide 54pt + halo tint 28% blurred + shadow tint 30%. Commit afe33fc.', tags: ['ui'] },
+    { col: 'done', slice: 'UX', title: 'Splash refresh — mongolfière transparente + parallax 3 layers', desc: 'BalloonSticker.png remplacé (transparent, plus de rectangle bleu). Sky gradient nocturne 3-stops. 3 couches parallax + oscillation verticale sinusoïdale + contra-drift.', tags: ['ui'] },
+    { col: 'done', slice: 'UX', title: 'BabySwipeCoachOverlay (1er lancement)', desc: 'Fullscreen frosted overlay .ultraThinMaterial avec 2 mains animées + CTA "J\'ai compris" gradient violet→bleu. Persisté via @AppStorage. Auto-dismiss dès qu\'un swipe réel est effectué.', tags: ['ui'] },
+    { col: 'done', slice: 'UX', title: 'Arrows swipe au bottom + edge glow arrondi', desc: 'Boutons chevron gauche/droite passent de vertical-center à bottomLeading/bottomTrailing. Edge glow arrondi.', tags: ['ui'] },
+    { col: 'done', slice: 'UX', title: 'Refonte Timeline tab — pixel-perfect vs mockup Khloé', desc: 'Header : nom bébé H1 + weather chip 24°C. Stats : 4 cards horizontales. Filter bar + bouton "+". EventRow refactor : time gauche + colored dot rail + icon circle + title/subtitle + avatar+Papa/Maman à droite. Actions rapides bottom card élevée.', tags: ['ui'] },
+    { col: 'done', slice: 'S9', title: 'S9.1 — QuickActionModel @Model + Seeder', desc: 'Migration SwiftData (Option B). Seeder idempotent insère les 6 built-ins. Champs : name, iconSFSymbol, tintCategory, timerEnabled, photosEnabled, linkedBabyIDs, isBuiltIn, isHidden, order, lastUsedAt. EventKind.fromBuiltInKey() reverse map.', tags: ['data'] },
+    { col: 'done', slice: 'S9', title: 'S9.2 — Edit sheet + IconPicker (40 SF Symbols curated)', desc: 'QuickActionEditSheet + IconPickerView. 6 groupes (Alimentation/Sommeil/Hygiène/Activités/Santé/Émotions) × ~40 icônes. Bouton "Réinitialiser les built-ins".', tags: ['ui', 'data'] },
+    { col: 'done', slice: 'SPEC', title: 'Spec Slice 9 — Custom Quick Actions (Option B full SwiftData)', desc: 'features/slice-9-custom-quick-actions.md — 14 BR, 10 sub-slices, TDD test list. Slices 9.3-9.10 (custom action creator, multi-baby, hide/delete, timer override, photos toggle) → APRÈS S5 pour hériter de la sync.', tags: ['data'] },
+    { col: 'done', slice: 'MEMORY', title: 'Reference PocketBase multi-env pattern (canon Shikki)', desc: 'reference_pocketbase_env_pattern.md — WabiSabi = source of truth (3 envs, Docker+Caddy TLS, Distribution.current, AppConfig server-driven). MiniLoups adapt = 2 envs (staging nuc-dev + prod obyw-one).', tags: ['data'] },
+    { col: 'done', slice: 'SLICE-10', title: '✅ Slice 10 — Home refonte + FAB central + Radial Menu', desc: '8 sub-slices livrées. Nouvelle IA nav : Accueil · Calendrier · [FAB +] · Stats · Mon compte. FAB flottant gradient, tap ouvre radial menu 5 bulles + backdrop flou. Home épurée : HomeHeaderView + DateNavigatorView + DailySummaryCard + TimelineEmptyStateView. Cleanup 5 anciens fichiers.', tags: ['ui', 'critical'] },
+    { col: 'done', slice: 'UX', title: '✅ Haptics.swift centralisé — feedback firm (.rigid) sur ~20 CTAs', desc: 'DesignSystem/Haptics.swift @MainActor. Wired firm sur FAB, bulles radiales, Stop event, Paywall CTA, SIWA, Réglages, delete compte. Warning/error sur les états critiques.', tags: ['ui'] },
+    { col: 'done', slice: 'SPEC', title: '✅ Spec Slice 11 — Santé Refonte MediTrack (validé user 2026-07-20)', desc: 'features/slice-11-sante-refonte-meditrack.md — décisions archi : (1) Style KidsPalette/KidsFont/KidsActionButton ; (2) RDV toggle "aussi dans Apple Calendar" (EventKit) ; (3) Quick actions "maladie en cours" 4 raccourcis accessibles en 1 tap.', tags: ['data', 'ui'] },
+    { col: 'done', slice: 'CHORE', title: '✅ 6 commits atomiques session 17/07 (afe33fc → 25d26b0)', desc: 'personas + splash + timeline refonte + s9.1 data + s5 (infra+swift+invite) + roadmap + invite button + PB migration fix + screenshots. main clean.', tags: [] },
+    { col: 'done', slice: 'S5.a', title: '✅ PocketBase deployed local (Docker + colima)', desc: 'colima start (2 CPU/4G/20G) + docker compose build + init-instance.sh dev → PocketBase v0.25.3 up sur http://localhost:8090. Admin + 5 collections mnl_* créées. Smoke test end-to-end OK.', tags: ['data'] },
+    { col: 'done', slice: 'S5.c', title: '✅ Bouton "Inviter le coparent" wired dans BabyPickerView', desc: 'Long-press sur baby avatar → contextMenu → "Inviter le coparent" → InviteBabySheet(baby:). @State invitingBaby + .sheet(item:). Remplace placeholder "Partager".', tags: ['ui'] },
+    { col: 'done', slice: 'S5.a', title: '✅ S5.a — Infra PocketBase locale prête (à déployer)', desc: 'pocketbase/ créé : Dockerfile Alpine + PB v0.25.3, docker-compose.yml dev, docker-compose.prod.yml + Caddy TLS. Scripts init-instance.sh, backup.sh, export-schema.sh. Migration JS 5 collections (mnl_babies, mnl_events, mnl_shares, mnl_app_config, mnl_quick_actions).', tags: ['data'] },
+    { col: 'done', slice: 'S5.b', title: '✅ S5.b — Swift layer (6 fichiers Services/Sync/)', desc: 'BackendEnv enum + PocketBaseClient actor + SIWAPocketBaseBridge (deterministic SHA256) + AppConfigService (@Observable, cache UserDefaults) + SyncEngine scaffold + SyncStatusBadge UI. Build vert.', tags: ['data'] },
+    { col: 'done', slice: 'S5.b.5', title: '✅ S5.b.5 — SyncEngine push/pull impl (SwiftData ↔ PB) bidirectionnel', desc: 'Ajouté pbRecordID + updatedAt sur Baby/BabyEvent/QuickActionModel. PBDTO.swift Codable. push/pull avec last-write-wins. Build vert.', tags: ['data'] },
+    { col: 'done', slice: 'S5.b.5.e', title: '✅ S5.b.5.e — SIWA→PB bridge wired + bump updatedAt', desc: 'SyncEngine.attachAppleSession → SIWAPocketBaseBridge.exchange (login OR signup) → syncNow. Wired dans OnboardingView.handleAppleResult. bumpUpdatedAt() extension sur @Model.', tags: ['data'] },
+    { col: 'done', slice: 'S5.b.7', title: '✅ S5.b.7 — SyncEngine + Badge wired dans header Timeline', desc: 'MiniLoupsApp instancie PocketBaseClient + AppConfigService + SyncEngine et inject via .environment. TimelineHeaderView affiche WeatherChip + SyncStatusBadge. Auto syncNow + appConfig.refresh dans .task RootView.', tags: ['data'] },
+    { col: 'done', slice: 'S5.c', title: '✅ S5.c — Co-parent invite flow (deep link + AcceptInviteView + InviteBabySheet)', desc: 'URL scheme miniloups:// enregistré. InviteURLParser + InviteService.generate/accept/listMyPending/revoke. AcceptInviteView (loading/loaded/accepting/error). InviteBabySheet (generate URL + Copy + ShareLink). Deep link handling MiniLoupsApp.onOpenURL.', tags: ['data'] },
+    { col: 'done', slice: 'SPEC', title: '✅ Spec Slice 12 — Famille + live parent sync + audit log (PocketBase-based)', desc: 'features/slice-12-family-live-parent-sync.md — décisions actées : SIWA-first + wizard Famille, sexe binaire (compat OMS), 1-2 parents, PocketBase realtime SSE (<2s), EventChangeLog audit log complet, FamilyActivityBanner + LiveActivityToast, migration auto users existants. Effort ~4-6j.', tags: ['critical', 'data', 'ui'] },
+    { col: 'done', slice: 'SPEC', title: '✅ Spec Slice 13 — Adoption pattern PocketBase Miniloo + NetKit HTTP', desc: 'features/slice-13-pocketbase-netkit-adoption.md — 10 BR, 16 sub-slices en 4 phases. NetKit + CoreKit + pattern PocketBaseBackend Miniloo (actor Swift 6 + IdempotencyKey + GDPR eraseUser paginé + protocol seam).', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'OVERRIDE', title: '↩️ Override #3 REVERTED — Supabase abandonné, on garde PocketBase', desc: '2026-07-20 matin : override #3 tenté (PocketBase → Supabase self-hosted) puis REVERTED le même après-midi. Décision user : "y\'a pas de Supabase qui tienne — utilise mon connecteur à PocketBase". On adopte le pattern PocketBaseBackend.swift de Miniloo + NetKit + CoreKit.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'SLICE-10', title: '✅ Slice 10 — Test visuel + commit final', desc: 'Build vert ✓. Previews light/dark validées + run sim (pixel diff ≤ 4pt vs mockup + radial menu ≥ 55fps sans jank). Commit atomique b147c1d feat(s10).', tags: ['ui'] },
+    { col: 'done', slice: 'SLICE-11', title: '✅ Slice 11 — Impl Santé Refonte MediTrack', desc: 'Dashboard médical (annual counters + upcoming visits/vaccines), Illness detail avec tabs Timeline/Medical/Fever/Analysis, écrans AddIllness/AddEntry/AddVisit/AddPrescription en style KidsPalette. Quick actions "maladie en cours" 4 raccourcis. RDV avec toggle Apple Calendar (EventKit sync). Commit 99a8b0a.', tags: ['ui', 'critical'] },
+    { col: 'done', slice: 'SLICE-13', title: '✅ Slice 13 — Impl adoption PocketBase Miniloo + NetKit', desc: 'Phase 1-2 (81f90d1) : ajout NetKit + CoreKit SPM + MinilupsBackendProtocol + BackendError + StubBackend + IdempotencyKeyStore actor + TokenStore + port PocketBaseBackend.swift. Phase 3-4 (555ac04) : refactor SyncEngine/AppConfig/InviteService sur protocol + cleanup PocketBaseClient legacy.', tags: ['critical', 'data'] },
 
     // -------- DOING --------
-    { col: 'doing', slice: 'SLICE-11', title: '🚀 Slice 11 — Impl Santé Refonte MediTrack', desc: 'Spec validé. À porter : Dashboard médical (annual counters + upcoming visits/vaccines + active banner), Illness detail avec tabs Timeline/Medical/Fever/Analysis, écrans AddIllness / AddEntry / AddVisit / AddPrescription en style KidsPalette. Nouveauté phare : quick actions "maladie en cours" (4 raccourcis température/symptôme/photos/RDV) accessibles depuis n\'importe où en 1 tap. RDV médecin avec toggle Apple Calendar (EventKit sync). Après commit slice-10.', tags: ['ui', 'critical'] },
-    { col: 'doing', slice: 'SLICE-10', title: '🎯 Slice 10 — Test visuel + commit final', desc: 'Build vert ✓. Reste : test visuel Previews light/dark dans Xcode + run sim (pixel diff ≤ 4pt vs mockup + radial menu ≥ 55fps sans jank) → puis commit atomique feat(s10): home refonte + FAB radial menu + haptics firm.', tags: ['ui'] },
-
-    // -------- 3RD OVERRIDE 2026-07-20 → REVERTED SAME DAY --------
-    { col: 'done', slice: 'OVERRIDE', title: '↩️ Override #3 REVERTED — Supabase abandonné, on garde PocketBase', desc: '2026-07-20 matin : override #3 tenté (PocketBase → Supabase self-hosted nuc-dev) puis REVERTED le même après-midi. Décision user : "y\'a pas de Supabase qui tienne — utilise mon connecteur à PocketBase". On adopte le pattern PocketBaseBackend.swift de Miniloo (actor Swift 6 + URLSession slim + Idempotency-Key retry safety + GDPR eraseUser paginé + protocol seam avec stub swap) + NetKit + CoreKit en dépendances SPM locales. Slice-13 rewrite (features/slice-13-pocketbase-netkit-adoption.md). Cf memory project_supabase_override.md (marqué REVERTED) et project_pocketbase_override.md (réactivé).', tags: ['critical', 'data'] },
-
-    // -------- NEXT UP : Slice 13 — Adoption pattern PocketBase Miniloo + NetKit (précède S12) --------
-    { col: 'done', slice: 'SPEC', title: '✅ Spec Slice 13 — Adoption pattern PocketBase Miniloo + NetKit HTTP', desc: 'features/slice-13-pocketbase-netkit-adoption.md — 13 sections, 10 BR, 16 sub-slices en 4 phases. Objectif : remplacer PocketBaseClient DIY par le pattern PocketBaseBackend.swift de Miniloo (actor Swift 6, URLSession slim sans cache/cookie, Idempotency-Key retry safety, GDPR eraseUser paginé partial-failure, protocol seam + StubBackend) + NetKit HTTP transport (mutualisation stack FJ Studio). Phase 1 SPM deps ; Phase 2 port PocketBaseBackend adapté schéma mnl_* ; Phase 3 refactor SyncEngine/AppConfig/InviteService sur protocol ; Phase 4 cleanup + docs. Effort ~2-3j. Autonome (pas de dep externe — Miniloo/Sources/MinilooActivityKit/Backend/PocketBaseBackend.swift lu localement comme référence).', tags: ['critical', 'data'] },
-    { col: 'todo', slice: 'SLICE-13', title: '🏗 Slice 13 — Impl adoption PocketBase Miniloo + NetKit', desc: '16 sub-slices en 4 phases : Phase 1 (S13.1-3) ajout SPM NetKit+CoreKit + MinilupsBackendProtocol + BackendError + StubBackend ; Phase 2 (S13.4-10) IdempotencyKeyStore actor + TokenStore + port PocketBaseBackend.swift + méthodes record/load/delete pour babies/events/quick_actions + eraseUser paginé ; Phase 3 (S13.11-13) refactor SyncEngine/AppConfig/InviteService sur protocol ; Phase 4 (S13.14-16) cleanup PocketBaseClient legacy + docs backend-architecture.md + test end-to-end sur PB local. Précède obligatoirement slice-12 impl.', tags: ['critical', 'data'] },
-
-    // -------- Slice 12 — Famille + Live parent sync + Audit log (dépend de S13 PB+NetKit) --------
-    { col: 'done', slice: 'SPEC', title: '✅ Spec Slice 12 — Famille + live parent sync + audit log (PocketBase-based)', desc: 'features/slice-12-family-live-parent-sync.md — 12 sections, 16 BR, 14 sub-slices, décisions archi actées 2026-07-20 : (1) SIWA-first puis wizard Famille (Parent 1 préremplis SIWA, Parent 2 optionnel, 1..N enfants) ; (2) sexe binaire Garçon/Fille (compat courbes OMS) ; (3) 1-2 parents (single-parent OK) ; (4) PocketBase realtime SSE dès v1 (<2s propagation, subscribe par collection filtre family_id) ; (5) EventChangeLog @Model = audit log complet (who/when/field/oldVal/newVal en JSON) ; (6) FamilyActivityBanner Home 3 derniers items + tap deeplink EventDetailView ; (7) LiveActivityToast in-app foreground ; (8) migration auto users existants (Baby standalone → Family défaut) ; (9) avatars parents dans PB file field + local SwiftData Data. Effort ~4-6j. Dépend de S13 (PB + NetKit + PocketBaseBackend pattern).', tags: ['critical', 'data', 'ui'] },
-    { col: 'todo', slice: 'SLICE-12', title: '⭐ Slice 12 — Impl Famille + live parent sync + audit log', desc: 'La feature n°1 de MiniLoups (le vrai différenciateur vs concurrents). 14 sub-slices : S12.1 data models (Family/Parent/EventChangeLog/BabySex) + migration SwiftData ; S12.2 ActivityLogger + hook EventStarter ; S12.3 AvatarPickerView (photo/emoji/initiales) + upload PB file field ; S12.4-6 wizard onboarding 4 étapes ; S12.7 migration users existants ; S12.8 audit log wiring tous payload editors + section historique EventDetail ; S12.9-10 FamilyActivityBanner + FamilyActivityView + deeplink ; S12.11 PBRealtimeSSEClient + FamilyRealtimeChannel (subscribe 3 collections filtrées family_id) ; S12.12 LiveActivityToast foreground ; S12.13 FamilySectionCard Réglages ; S12.14 migration PB (mnl_families/mnl_parents/mnl_event_change_logs/mnl_invites) + push/pull SyncEngine + tests intégration access rules. **Nécessite S13 shipped**.', tags: ['critical', 'data', 'ui'] },
     { col: 'doing', slice: 'S7', title: 'Test paywall dans sim', desc: 'Cmd+R → Réglages → Passer à Pro. Acheter, rembourser via Debug > StoreKit > Manage Transactions.', tags: ['critical', 'money'] },
-    { col: 'doing', slice: 'UX', title: 'Feedback header + filter row (test visuel)', desc: 'Header pinned qui rétrécit smoothly au scroll (200→92pt) + TimelineFilterBar horizontale (Tout/Repas/Sommeil/Hygiène/Croissance/Santé). Tu confirmes que ça t\'plaît.', tags: ['ui'] },
+    { col: 'doing', slice: 'UX', title: 'Feedback header + filter row (test visuel)', desc: 'Header pinned qui rétrécit smoothly au scroll (200→92pt) + TimelineFilterBar horizontale. Tu confirmes que ça t\'plaît.', tags: ['ui'] },
+    { col: 'doing', slice: 'S10', title: '🎯 Capture des 6 screenshots (iPhone 6.9") — 3/6 fait', desc: '3 shots captured 17/07 sur iPhone 17 Pro Max (1320×2868) : 01-onboarding-siwa, 02-home-timeline, 03-splash-mongolfiere. Reste : Timeline avec data variée, Croissance tab, Médical tab, Réglages, Paywall.', tags: ['critical', 'ui'] },
 
-    // S5 sync co-parent PocketBase (PRIORITÉ ABSOLUE avant S9 custom actions)
-    { col: 'done', slice: 'S5.a', title: '✅ S5.a — Infra PocketBase locale prête (à déployer)', desc: 'pocketbase/ créé : Dockerfile Alpine + PB v0.25.3, docker-compose.yml dev, docker-compose.prod.yml + Caddy TLS, Caddyfile, .env.example, .gitignore. Scripts init-instance.sh (dev|staging|prod), backup.sh (tar.gz rotation 7), export-schema.sh. Migration JS unique 1721224800_create_mnl_collections.js : 5 collections (mnl_babies, mnl_events, mnl_shares, mnl_app_config, mnl_quick_actions) avec access rules owner + shared_with. README complet deploy/backup/troubleshooting. Reste : deploy staging nuc-dev + prod obyw-one (docker compose up + Caddy central) — bloqué par SSH access user.', tags: ['data'] },
-    { col: 'done', slice: 'S5.b', title: '✅ S5.b — Swift layer (6 fichiers Services/Sync/)', desc: 'BackendEnv enum (dev http://127.0.0.1:8090 / staging https://pb-miniloups.dev.obyw.one / prod https://pb-miniloups.obyw.one) résolu via AppEnvironment.current + MINILOUPS_ENV override. PocketBaseClient (actor, URLSession slim, auth-with-password + signup + list/get/create/update/delete generic, JSON date iso8601-fractional custom). SIWAPocketBaseBridge (email/pass déterministe SHA256 depuis Apple sub + pepper). AppConfigService (@Observable, cache UserDefaults, fetch mnl_app_config + fallback defaults). SyncEngine (scaffold @Observable @MainActor, State enum idle/syncing/success/error/offline, push/pull methods à impl slice-par-slice). SyncStatusBadge UI (dot coloré + label + pulse animation). Build vert.', tags: ['data'] },
-    { col: 'done', slice: 'S5.b.5', title: '✅ S5.b.5 — SyncEngine push/pull impl (SwiftData ↔ PB) bidirectionnel', desc: 'Ajouté pbRecordID + updatedAt sur Baby/BabyEvent/QuickActionModel (BabyEvent aussi : quickActionID + timerEnabledOverride). Nouveau PBDTO.swift : PBBaby/PBEvent/PBQuickAction Codable structs + AnyCodable wrapper JSON. SyncEngine.pushBabies/pushEvents/pushQuickActions : query .updatedAt > cutoff → create/update PB, stocke pbRecordID retour. pullBabies/pullEvents/pullQuickActions : list PB filter updated > cutoff → upsert SwiftData avec last-write-wins (remote.updated > local.updatedAt = overwrite). Build vert. Prêt à sync dès qu\'un backend PB tourne + user auth SIWA→PB.', tags: ['data'] },
-    { col: 'done', slice: 'S5.b.5.e', title: '✅ S5.b.5.e — SIWA→PB bridge wired + bump updatedAt', desc: 'SyncEngine.attachAppleSession(sub:name:) → SIWAPocketBaseBridge.exchange (login OR signup) → syncNow auto. Wired dans OnboardingView.handleAppleResult après SIWA success (Task { await ... } silent-on-failure). Nouveau SyncBumpExtensions.swift : bumpUpdatedAt() sur Baby/BabyEvent/QuickActionModel. Wire dans EventStarter.stop() + QuickActionEditSheet (TextField binding + reorder). SyncEngine.clearSession() pour logout/delete account futur. Build vert. Sync opérationnelle end-to-end (attend juste un backend PB deployed).', tags: ['data'] },
-    { col: 'done', slice: 'S5.b.7', title: '✅ S5.b.7 — SyncEngine + Badge wired dans header Timeline', desc: 'MiniLoupsApp instancie PocketBaseClient + AppConfigService + SyncEngine (@State) et inject via .environment. TimelineHeaderView affiche WeatherChip + SyncStatusBadge sous. Auto syncNow() + appConfig.refresh() dans .task RootView. État idle par défaut jusqu\'à ce que l\'utilisateur soit authentifié sur PB (safe : pas de bruit erreur sans backend). Build vert.', tags: ['data'] },
-    { col: 'todo', slice: 'S5.b.7b', title: 'S5.b.7b — Auto-sync timer 30s + retry sur ScenePhase.active', desc: 'Ajouter Timer.publish(every: 30, on: .main).autoconnect() + onChange(scenePhase == .active) → syncEngine.syncNow(). Débonce pour ne pas spammer si actif < 5s.', tags: ['data'] },
+    // -------- TODO --------
+    // Slice 12 — impl en cours session 6 (2026-07-21)
+    { col: 'done', slice: 'S12.1', title: '✅ S12.1 — Data models (Family + Parent + EventChangeLog + BabySex)', desc: '3 @Model SwiftData + enums + extension Baby (nickname, sex, family) + extension BabyEvent (updatedByUserID) + ParentColorPalette FNV-1a hash stable + 3 PBDTOs + ModelContainer registration. PR#1.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'S12.2', title: '✅ S12.2 — ActivityLogger service + hook EventStarter', desc: '@Observable @MainActor service qui écrit EventChangeLog atomiquement. Hook create+stop dans EventStarter. Wire 4 views. Silent-on-failure. PR#3.', tags: ['critical', 'data'] },
+    { col: 'done', slice: 'S12.3', title: '✅ S12.3 — AvatarView + EmojiPickerGrid + AvatarPickerView', desc: 'AvatarView polymorphique (photo/emoji/initials) + 35 emojis curated 4 sections + Picker 3-tabs avec compression 512×512 JPEG q0.7. PR#4.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.4', title: '✅ S12.4 — FamilyWizardCoordinator + WizardStepView chrome', desc: '@Observable state machine 6-step avec Parent2InvitePolicy skip auto. Drafts. Chrome commun : progress dots + hero title + nav bar. PR#5.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.5', title: '✅ S12.5 — Parent steps + WelcomeStep + FamilyWizardHost + debug entry', desc: 'ParentProfileStep polymorphique Parent1/Parent2 + Parent2ChoiceStep 3 CTAs + WelcomeStep + FamilyWizardHost composer + entry Réglages "🧪 Debug" (#if DEBUG). PR#6.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.6', title: '✅ S12.6 — BabyFormView + SexPickerRow + BabyStepList', desc: 'Form enfant complet + SexPickerRow 2 cards Fille/Garçon + BabyStepList empty state + inline add/delete. Wire dans FamilyWizardHost. PR#7.', tags: ['ui'] },
+    { col: 'done', slice: 'S12.7', title: '✅ S12.7 — Wire wizard post-SIWA + FamilyWizardCommitter + FamilyMigrator (BR13)', desc: 'RootRouter refactor (familyWizard route). FamilyWizardCommitter (insert atomique Family+Parents+Babies). FamilyMigrator (Baby standalone → Family auto). RootRouterTests 3/3 verts. PR#8.', tags: ['critical', 'data', 'ui'] },
+    { col: 'done', slice: 'S12.8', title: '✅ S12.8 — AudiencePhraseBuilder + EventHistorySection + delete audit', desc: 'AudiencePhraseBuilder FR + mapping fieldPath dotted → labels FR. EventHistorySection dans EventDetailView : rail chronologique dots colorés + avatars + phrases. Hook log(deleted) avant context.delete. PR#9.', tags: ['ui', 'data'] },
+    { col: 'done', slice: 'S12.9-10', title: '✅ S12.9-10 — FamilyActivityBanner + FamilyActivityView + Fetcher + Row', desc: 'Fetcher (dedup BR8 30s + batch parents) + EventChangeRow + Banner Home 3 items + View fullscreen filter chip par baby + navigation vers EventDetailView + placeholder si event supprimé (BR9). PR#10.', tags: ['ui', 'data'] },
+    { col: 'todo', slice: 'S12.11', title: '📡 S12.11 — PBRealtimeSSEClient + FamilyRealtimeChannel (<2s propagation)', desc: 'actor URLSessionDataTask sur /api/realtime, parse SSE lines, reconnect exponential 1s→30s + circuit breaker 5 échecs. Subscribe 3 collections filtrées family_id. Dispatch invalidation SyncEngine.', tags: ['critical', 'data'] },
+    { col: 'todo', slice: 'S12.12', title: '🍞 S12.12 — LiveActivityToast in-app foreground', desc: 'Floating toast bottom "Papa a ajouté un biberon pour Roméo" 3s auto-dismiss. Trigger SSE. BR11 foreground only en v1.', tags: ['ui'] },
+    { col: 'todo', slice: 'S12.13', title: '⚙️ S12.13 — FamilySectionCard Réglages + cleanup debug', desc: 'Card Réglages avec avatars famille + Inviter coparent + Modifier profils + Supprimer ma famille triple confirmation (BR15). Retire debug entry S12.5.', tags: ['ui'] },
+    { col: 'todo', slice: 'S12.14', title: '🗄 S12.14 — Migration PB + push/pull SyncEngine + tests intégration', desc: 'Migration JS PB (mnl_families/mnl_parents/mnl_event_change_logs/mnl_invites + extensions mnl_babies/mnl_events + access rules RGPD + index (family_id, changed_at DESC)). Push/pull SyncEngine. Tests intégration access rules.', tags: ['critical', 'data'] },
+
+    // Auto-sync remaining
+    { col: 'todo', slice: 'S5.b.7b', title: 'S5.b.7b — Auto-sync timer 30s + retry sur ScenePhase.active', desc: 'Ajouter Timer.publish(every: 30, on: .main).autoconnect() + onChange(scenePhase == .active) → syncEngine.syncNow(). Débonce pour ne pas spammer.', tags: ['data'] },
     { col: 'todo', slice: 'S5.b.8', title: 'S5.b.8 — Realtime SSE subscriptions PB (<2s propagation)', desc: 'Extension SyncEngine+Realtime : URLSessionDataTask sur /api/realtime, SSE parsing lines, invalidate + repull sur event. Reconnect exponential backoff.', tags: ['data'] },
-    { col: 'done', slice: 'S5.c', title: '✅ S5.c — Co-parent invite flow (deep link + AcceptInviteView + InviteBabySheet)', desc: 'URL scheme miniloups:// enregistré (project.yml → Info.plist auto-généré CFBundleURLTypes). InviteURLParser.parseToken/makeInviteURL. InviteService.generate (token 32 chars SecRandom → POST mnl_shares expires_at +7j), .accept (fetch by token → validate expiry/self/already → PATCH mnl_babies.shared_with += currentUser → mark share.accepted_by/at → syncNow), .listMyPending, .revoke. AcceptInviteView : loading / loaded (baby preview + Accept CTA gradient) / accepting / error states. InviteBabySheet : baby avatar circle + generate button → URL affichée + Copy + ShareLink SwiftUI. Deep link handling : MiniLoupsApp.onOpenURL → InviteURLParser → @State pendingInviteToken → .sheet(item:) présente AcceptInviteView. Build vert. Reste : ajouter un bouton "Inviter coparent" dans BabyPicker/BabyDetail pour lancer InviteBabySheet.', tags: ['data'] },
-    { col: 'todo', slice: 'S9', title: 'S9.3-9.10 — Custom quick actions (après S5)', desc: 'Slices restantes du spec S9 : custom action creator (fullscreen builder), BabyMultiPicker, hide/delete, timer override BabyEvent, photos toggle → PhotosPicker sheet, long-press context menu. Attendre S5 pour hériter de la sync PocketBase gratuitement.', tags: ['ui'] },
+    { col: 'todo', slice: 'S9', title: 'S9.3-9.10 — Custom quick actions (après S12)', desc: 'Slices restantes : custom action creator, BabyMultiPicker, hide/delete, timer override, photos toggle, long-press context menu.', tags: ['ui'] },
 
     // S9 Compliance
-    { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission (les Link in-app pointent déjà dessus)', tags: ['critical', 'legal'] },
+    { col: 'todo', slice: 'S9', title: 'Privacy Policy + Terms LIVE sur Framer miniloups.app', desc: 'URLs publiques versionnées — bloqueur App Store submission', tags: ['critical', 'legal'] },
     { col: 'todo', slice: 'S9', title: 'DPA signé avec PocketBase host', desc: 'Hetzner/OVH EU (éviter Schrems II)', tags: ['legal'] },
-    { col: 'todo', slice: 'S9', title: 'Registre traitements (RGPD Art. 30)', desc: 'Document interne — obligation même seul', tags: ['legal'] },
     { col: 'todo', slice: 'S9', title: 'DPO email privacy@miniloups.app', desc: 'Point de contact privacy obligatoire', tags: ['legal'] },
     { col: 'todo', slice: 'S9', title: 'Mentions légales + CGV', desc: 'Obligation FR pour app commerciale avec abonnement', tags: ['legal'] },
     { col: 'todo', slice: 'S9', title: 'Refresh NSPhotoLibraryUsageDescription précise', desc: 'Wording custom FR + EN qui explique usage journal bébé', tags: ['legal'] },
 
-    // S10 App Store assets
-    { col: 'done', slice: 'S10', title: 'App Icon 1024x1024', desc: '✅ Fait 2026-07-14 · store/assets/AppIcon-1024.png (montgolfière officielle sticker). Installé dans AppIcon.appiconset.', tags: ['ui'] },
-    { col: 'todo', slice: 'S10', title: 'Screenshots iPhone 6.9" (obligatoire)', desc: '3-10 shots avec captions marketing overlay', tags: ['critical', 'ui'] },
-    { col: 'todo', slice: 'S10', title: 'Screenshots iPhone 6.5" (obligatoire)', desc: '3-10 shots avec captions', tags: ['critical'] },
-    { col: 'todo', slice: 'S10', title: 'App Preview videos 15-30s', desc: 'Boost conversion +25% (Apple stat). Optionnel mais reco.', tags: ['growth'] },
-    { col: 'doing', slice: 'S10', title: '🎯 Capture des 6 screenshots (iPhone 6.9") — 3/6 fait', desc: '3 shots captured 17/07 sur iPhone 17 Pro Max (1320×2868) : 01-onboarding-siwa, 02-home-timeline (empty state avec la refonte pixel-perfect), 03-splash-mongolfiere (parallax mid-flight). Reste : Timeline avec data variée, Croissance tab, Médical tab, Réglages, Paywall — nécessite navigation manuelle dans le sim.', tags: ['critical', 'ui'] },
+    // S10 App Store assets restants
+    { col: 'todo', slice: 'S10', title: 'Screenshots iPhone 6.9" (obligatoire) — reste 3/6', desc: 'Timeline avec data variée, Croissance tab, Médical tab, Réglages, Paywall', tags: ['critical', 'ui'] },
     { col: 'todo', slice: 'S10', title: 'Screenshots avec captions marketing overlay', desc: 'Ajouter texte overlay Figma/Framer sur chaque shot (hook + benefit)', tags: ['ui'] },
     { col: 'todo', slice: 'S10', title: 'Screenshots iPhone 6.5" (obligatoire aussi)', desc: 'Refaire les 6 shots sur iPhone 15 Plus sim', tags: ['critical'] },
     { col: 'todo', slice: 'S10', title: 'App Preview videos 15-30s', desc: 'Screen record du sim, 6.9" + 6.5". Boost conversion +25%.', tags: ['growth'] },
@@ -323,16 +871,17 @@ const DATA = {
     { col: 'todo', slice: 'S11', title: 'Beta externe (20-100 parents)', desc: 'Recruter via Reddit r/newparents, Insta parentalité', tags: ['growth'] },
     { col: 'todo', slice: 'S11', title: 'Sandbox testers créés', desc: 'Comptes App Store Connect pour tester purchase flow', tags: ['money'] },
 
-    // S12 Growth
-    { col: 'todo', slice: 'S12', title: 'Landing miniloups.app (Framer)', desc: 'Waitlist email → notify at launch', tags: ['growth'] },
-    { col: 'todo', slice: 'S12', title: 'Apple Search Ads FR (30-50€/j)', desc: 'Keywords: suivi bébé, baby tracker, journal bébé. CPI ~2-4€.', tags: ['money', 'growth'] },
-    { col: 'todo', slice: 'S12', title: 'Meta Ads (Insta/FB) target mums 25-40', desc: 'Créatifs UGC > brand', tags: ['growth'] },
-    { col: 'todo', slice: 'S12', title: 'Referral loop coparent = 1 mois Pro offert', desc: 'Chaîne viral naturelle', tags: ['growth', 'money'] },
-    { col: 'todo', slice: 'S12', title: 'Product Hunt launch day-of', desc: 'Audience US early adopters', tags: ['growth'] },
-    { col: 'todo', slice: 'S12', title: 'Content SEO /journal (20 articles)', desc: 'Rythme bébé 3 mois, combien de couches, etc. 6-12 mois pour ranker', tags: ['growth'] },
+    // S12 Growth (external growth, pas la slice-12 impl)
+    { col: 'todo', slice: 'GROWTH', title: 'Landing miniloups.app (Framer)', desc: 'Waitlist email → notify at launch', tags: ['growth'] },
+    { col: 'todo', slice: 'GROWTH', title: 'Apple Search Ads FR (30-50€/j)', desc: 'Keywords: suivi bébé, baby tracker, journal bébé. CPI ~2-4€.', tags: ['money', 'growth'] },
+    { col: 'todo', slice: 'GROWTH', title: 'Meta Ads (Insta/FB) target mums 25-40', desc: 'Créatifs UGC > brand', tags: ['growth'] },
+    { col: 'todo', slice: 'GROWTH', title: 'Referral loop coparent = 1 mois Pro offert', desc: 'Chaîne viral naturelle', tags: ['growth', 'money'] },
+    { col: 'todo', slice: 'GROWTH', title: 'Product Hunt launch day-of', desc: 'Audience US early adopters', tags: ['growth'] },
+    { col: 'todo', slice: 'GROWTH', title: 'Content SEO /journal (20 articles)', desc: 'Rythme bébé 3 mois, combien de couches, etc. 6-12 mois pour ranker', tags: ['growth'] },
 
-    // -------- BLOCKED --------
-    { col: 'done', slice: 'ADMIN', title: 'Compte Apple Developer Program (99€/an)', desc: '✅ Validé le 2026-07-14. Team ID à configurer dans Config/Secrets.xcconfig avant Archive.', tags: ['critical'] },
+    // -------- ADMIN done + BLOCKED --------
+    { col: 'done', slice: 'ADMIN', title: 'Compte Apple Developer Program (99€/an)', desc: 'Validé le 2026-07-14. Team ID à configurer dans Config/Secrets.xcconfig avant Archive.', tags: ['critical'] },
+    { col: 'done', slice: 'S10', title: 'App Icon 1024x1024', desc: 'Fait 2026-07-14 · store/assets/AppIcon-1024.png (montgolfière officielle sticker). Installé dans AppIcon.appiconset.', tags: ['ui'] },
     { col: 'blocked', slice: '—', title: 'Domaine miniloups.app', desc: 'Vérifier disponibilité + acheter (~14€/an .app)', tags: [] },
     { col: 'blocked', slice: '—', title: 'Email privacy@miniloups.app opérationnel', desc: 'Fastmail/Proton/Google Workspace', tags: ['legal'] },
 
@@ -345,34 +894,30 @@ const DATA = {
   ]
 };
 
-function render() {
-  const board = document.getElementById('board');
-  board.innerHTML = '';
-  const counts = { todo: 0, doing: 0, blocked: 0, done: 0, submit: 0 };
-  DATA.columns.forEach(col => {
-    const cards = DATA.cards.filter(c => c.col === col.key);
-    counts[col.key] = cards.length;
-    const el = document.createElement('div');
-    el.className = 'col ' + col.key;
-    el.innerHTML = `
-      <div class="col-header">
-        <div class="col-title">${col.title}</div>
-        <div class="count-pill">${cards.length}</div>
-      </div>
-      ${cards.map(cardHTML).join('')}
-    `;
-    board.appendChild(el);
-  });
-  document.getElementById('count-todo').textContent = counts.todo;
-  document.getElementById('count-doing').textContent = counts.doing;
-  document.getElementById('count-blocked').textContent = counts.blocked;
-  document.getElementById('count-done').textContent = counts.done;
-  const total = counts.todo + counts.doing + counts.blocked + counts.done;
-  const pct = total ? Math.round((counts.done / total) * 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = `Progression globale : ${pct}% (${counts.done}/${total} tâches hors submit-final)`;
-  const d = new Date();
-  document.getElementById('gen-date').textContent = d.toLocaleString('fr-FR');
+// =========================================================================
+// COMMON HELPERS
+// =========================================================================
+function metaFor(card) {
+  return CARD_META[card.title] || null;
+}
+
+function formatDateFR(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y.slice(2)}`;
+}
+
+function cardMetaHTML(card) {
+  const meta = metaFor(card);
+  if (!meta) return '';
+  const sess = meta.session ? SESSIONS[meta.session] : null;
+  const dates = [];
+  if (meta.started) dates.push(`<span class="started">${formatDateFR(meta.started)}</span>`);
+  if (meta.started && meta.delivered) dates.push(`<span class="arrow">→</span>`);
+  if (meta.delivered) dates.push(`<span class="delivered">✓ ${formatDateFR(meta.delivered)}</span>`);
+  if (!meta.started && !meta.delivered) return '';
+  const sessPill = sess ? `<span class="sess">${sess.code}</span>` : '';
+  return `<div class="meta">${sessPill}<span class="dates">${dates.join(' ')}</span></div>`;
 }
 
 function cardHTML(c) {
@@ -387,11 +932,408 @@ function cardHTML(c) {
       </div>
       ${desc}
       ${tags ? `<div class="tags">${tags}</div>` : ''}
+      ${cardMetaHTML(c)}
     </div>
   `;
 }
 
-render();
+// =========================================================================
+// VIEW BY STATUS (kanban original)
+// =========================================================================
+function renderByStatus() {
+  const container = document.getElementById('view-container');
+  container.innerHTML = `<div class="board" id="board"></div>`;
+  const board = document.getElementById('board');
+  DATA.columns.forEach(col => {
+    const cards = DATA.cards.filter(c => c.col === col.key);
+    const el = document.createElement('div');
+    el.className = 'col ' + col.key;
+    el.innerHTML = `
+      <div class="col-header">
+        <div class="col-title">${col.title}</div>
+        <div class="count-pill">${cards.length}</div>
+      </div>
+      ${cards.map(cardHTML).join('')}
+    `;
+    board.appendChild(el);
+  });
+}
+
+// =========================================================================
+// VIEW BY SESSION (grouped collapsible)
+// =========================================================================
+function itemHTML(card, showSession = false) {
+  const meta = metaFor(card);
+  const sess = meta && meta.session ? SESSIONS[meta.session] : null;
+  const th = meta && meta.theme ? THEMES[meta.theme] : null;
+  const bits = [];
+  if (showSession && sess) bits.push(`<span class="mp session">${sess.code} · ${formatDateFR(sess.date)}</span>`);
+  if (th) bits.push(`<span class="mp">${th.icon} ${th.label}</span>`);
+  if (meta && meta.delivered && !showSession) bits.push(`<span class="mp">✓ ${formatDateFR(meta.delivered)}</span>`);
+  if (meta && meta.started && !meta.delivered) bits.push(`<span class="mp">▶ ${formatDateFR(meta.started)}</span>`);
+  const metaLine = bits.length ? `<div class="item-meta">${bits.join('')}</div>` : '';
+  const slicePill = card.slice ? `<span class="item-slice">${card.slice}</span>` : '';
+  const desc = card.desc ? `<div class="item-desc">${card.desc}</div>` : '';
+  return `
+    <div class="item">
+      <div class="col-dot ${card.col}"></div>
+      <div class="item-body">
+        <div class="item-title">${slicePill}${card.title}</div>
+        ${desc}
+        ${metaLine}
+      </div>
+    </div>
+  `;
+}
+
+function sessionRecapHTML(sess) {
+  const testable = sess.testable && sess.testable.length
+    ? `<div class="recap-block testable">
+        <div class="rb-title">🧪 Ce que tu peux tester</div>
+        <ul>${sess.testable.map(t => `<li>${t}</li>`).join('')}</ul>
+      </div>` : '';
+  const shipped = sess.shipped
+    ? `<div class="recap-block shipped">
+        <div class="rb-title">🎯 Livré proprement</div>
+        <p>${sess.shipped}</p>
+      </div>` : '';
+  const blocks = (testable || shipped)
+    ? `<div class="recap-blocks">${testable}${shipped}</div>` : '';
+  const shots = sess.screenshots && sess.screenshots.length
+    ? `<h4><span class="h4-icon">📸</span>Screenshots<span class="h4-count">${sess.screenshots.length}</span></h4>
+       <div class="screenshots-strip">
+         ${sess.screenshots.map(s => `
+           <div class="shot">
+             <img src="${s.src}" alt="${s.cap}" onclick="openLightbox('${s.src}')" />
+             <div class="cap">${s.cap}</div>
+           </div>`).join('')}
+       </div>` : '';
+  return blocks + shots;
+}
+
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.classList.add('open');
+}
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') e.target.classList.remove('open');
+});
+
+function renderBySession() {
+  const container = document.getElementById('view-container');
+  container.innerHTML = `<div class="grouped" id="grouped"></div>`;
+  const grouped = document.getElementById('grouped');
+
+  const sessionIds = Object.keys(SESSIONS).map(Number).sort((a, b) => b - a);
+
+  // Bucket "hors session" (cards sans meta ou sans session)
+  const orphanCards = DATA.cards.filter(c => !metaFor(c) || !metaFor(c).session);
+
+  sessionIds.forEach(sid => {
+    const sess = SESSIONS[sid];
+    const sessCards = DATA.cards.filter(c => {
+      const m = metaFor(c);
+      return m && m.session === sid;
+    });
+    if (!sessCards.length && !sess.testable) return;
+
+    // Group by theme within session
+    const byTheme = {};
+    sessCards.forEach(c => {
+      const m = metaFor(c);
+      const th = m.theme || 'core';
+      (byTheme[th] = byTheme[th] || []).push(c);
+    });
+
+    const themeBlocks = Object.keys(THEMES)
+      .filter(tk => byTheme[tk])
+      .map(tk => {
+        const th = THEMES[tk];
+        const items = byTheme[tk].map(c => itemHTML(c, false)).join('');
+        return `
+          <h4><span class="h4-icon">${th.icon}</span>${th.label}<span class="h4-count">${byTheme[tk].length}</span></h4>
+          <div class="item-list">${items}</div>
+        `;
+      }).join('');
+
+    const themesPills = Object.keys(byTheme).map(tk => {
+      const th = THEMES[tk];
+      return `<span class="pill">${th.icon} ${th.label} <b>${byTheme[tk].length}</b></span>`;
+    }).join('');
+
+    const doneCount = sessCards.filter(c => c.col === 'done').length;
+    const openCount = sessCards.filter(c => c.col === 'doing' || c.col === 'todo').length;
+    const statusBadge = openCount === 0 && sessCards.length > 0
+      ? '<span class="pill" style="background: rgba(110,220,155,0.25); color: #1B5E20;">🎉 Livrée</span>'
+      : (openCount > 0 ? `<span class="pill" style="background: rgba(77,150,255,0.15); color: #1E40AF;">🔄 ${openCount} en cours</span>` : '');
+
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    // Default: open the latest session (sid === max)
+    if (sid === Math.max(...sessionIds)) card.classList.add('open');
+    card.innerHTML = `
+      <div class="group-header">
+        <span class="chev">▶</span>
+        <div class="badge-emoji">📅</div>
+        <div class="title-block">
+          <div class="code">${sess.code} · ${sess.label}</div>
+          <div class="subtitle">${formatDateFR(sess.date)} — ${sess.desc}</div>
+        </div>
+        <div class="stats-row">
+          <span class="pill count">${sessCards.length} carte${sessCards.length > 1 ? 's' : ''}</span>
+          ${doneCount ? `<span class="pill">✓ ${doneCount} livrée${doneCount > 1 ? 's' : ''}</span>` : ''}
+          ${statusBadge}
+          ${themesPills}
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="group-body-inner">
+          ${sessionRecapHTML(sess)}
+          ${themeBlocks}
+        </div>
+      </div>
+    `;
+    card.querySelector('.group-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    grouped.appendChild(card);
+  });
+
+  // Orphan bucket at the end
+  if (orphanCards.length) {
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    const byCol = {};
+    orphanCards.forEach(c => { (byCol[c.col] = byCol[c.col] || []).push(c); });
+    const colBlocks = Object.keys(byCol).map(col => {
+      const items = byCol[col].map(c => itemHTML(c, false)).join('');
+      const colDef = DATA.columns.find(x => x.key === col);
+      return `
+        <h4><span class="h4-icon">${colDef.title.split(' ')[0]}</span>${colDef.title.split(' ').slice(1).join(' ')}<span class="h4-count">${byCol[col].length}</span></h4>
+        <div class="item-list">${items}</div>
+      `;
+    }).join('');
+    card.innerHTML = `
+      <div class="group-header">
+        <span class="chev">▶</span>
+        <div class="badge-emoji">🌐</div>
+        <div class="title-block">
+          <div class="code">Hors session · Backlog & Submit</div>
+          <div class="subtitle">Tâches à venir sans session assignée (TODO / BLOCKED / SUBMIT)</div>
+        </div>
+        <div class="stats-row">
+          <span class="pill count">${orphanCards.length} tâches</span>
+        </div>
+      </div>
+      <div class="group-body"><div class="group-body-inner">${colBlocks}</div></div>
+    `;
+    card.querySelector('.group-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    grouped.appendChild(card);
+  }
+}
+
+// =========================================================================
+// VIEW BY THEME
+// =========================================================================
+function renderByTheme() {
+  const container = document.getElementById('view-container');
+  container.innerHTML = `<div class="grouped" id="grouped"></div>`;
+  const grouped = document.getElementById('grouped');
+
+  const themeKeys = Object.keys(THEMES);
+  const orphanCards = DATA.cards.filter(c => !metaFor(c) || !metaFor(c).theme);
+
+  themeKeys.forEach(tk => {
+    const th = THEMES[tk];
+    const themeCards = DATA.cards.filter(c => {
+      const m = metaFor(c);
+      return m && m.theme === tk;
+    });
+    if (!themeCards.length) return;
+
+    // Group by session within theme
+    const bySess = {};
+    themeCards.forEach(c => {
+      const m = metaFor(c);
+      const s = m.session || 0;
+      (bySess[s] = bySess[s] || []).push(c);
+    });
+
+    const sessBlocks = Object.keys(bySess)
+      .map(Number)
+      .sort((a, b) => b - a)
+      .map(sid => {
+        const sess = SESSIONS[sid];
+        const items = bySess[sid].map(c => itemHTML(c, true)).join('');
+        const header = sess
+          ? `${sess.code} · ${sess.label} <span style="color: var(--muted); font-weight: 600;">(${formatDateFR(sess.date)})</span>`
+          : 'Sans session';
+        return `
+          <h4><span class="h4-icon">📅</span>${header}<span class="h4-count">${bySess[sid].length}</span></h4>
+          <div class="item-list">${items}</div>
+        `;
+      }).join('');
+
+    const doneCount = themeCards.filter(c => c.col === 'done').length;
+    const sessCount = Object.keys(bySess).filter(k => Number(k) > 0).length;
+
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    card.innerHTML = `
+      <div class="group-header">
+        <span class="chev">▶</span>
+        <div class="badge-emoji">${th.icon}</div>
+        <div class="title-block">
+          <div class="code">${th.label}</div>
+          <div class="subtitle">${th.desc}</div>
+        </div>
+        <div class="stats-row">
+          <span class="pill count">${themeCards.length} carte${themeCards.length > 1 ? 's' : ''}</span>
+          ${doneCount ? `<span class="pill">✓ ${doneCount} livrée${doneCount > 1 ? 's' : ''}</span>` : ''}
+          <span class="pill">📅 ${sessCount} session${sessCount > 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="group-body-inner">${sessBlocks}</div>
+      </div>
+    `;
+    card.querySelector('.group-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    grouped.appendChild(card);
+  });
+
+  // Orphan bucket
+  if (orphanCards.length) {
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    const items = orphanCards.map(c => itemHTML(c, true)).join('');
+    card.innerHTML = `
+      <div class="group-header">
+        <span class="chev">▶</span>
+        <div class="badge-emoji">🌐</div>
+        <div class="title-block">
+          <div class="code">Non catégorisé</div>
+          <div class="subtitle">Tâches sans thème assigné (backlog + submit)</div>
+        </div>
+        <div class="stats-row">
+          <span class="pill count">${orphanCards.length} tâches</span>
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="group-body-inner">
+          <div class="item-list">${items}</div>
+        </div>
+      </div>
+    `;
+    card.querySelector('.group-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    grouped.appendChild(card);
+  }
+}
+
+// =========================================================================
+// STATS + view switching
+// =========================================================================
+function updateStats() {
+  const counts = { todo: 0, doing: 0, blocked: 0, done: 0, submit: 0 };
+  DATA.cards.forEach(c => { counts[c.col] = (counts[c.col] || 0) + 1; });
+  document.getElementById('count-todo').textContent = counts.todo;
+  document.getElementById('count-doing').textContent = counts.doing;
+  document.getElementById('count-blocked').textContent = counts.blocked;
+  document.getElementById('count-done').textContent = counts.done;
+  const total = counts.todo + counts.doing + counts.blocked + counts.done;
+  const pct = total ? Math.round((counts.done / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent =
+    `Progression globale : ${pct}% (${counts.done}/${total} tâches hors submit-final)`;
+  document.getElementById('gen-date').textContent = new Date().toLocaleString('fr-FR');
+}
+
+function renderCurrentHero() {
+  const slot = document.getElementById('current-hero-slot');
+  const sessionIds = Object.keys(SESSIONS).map(Number).sort((a, b) => b - a);
+
+  // Détecter "session en cours" : d'abord la session la plus récente avec des DOING,
+  // sinon la session la plus récente (aujourd'hui).
+  let currentId = null;
+  for (const sid of sessionIds) {
+    const hasDoing = DATA.cards.some(c => {
+      const m = metaFor(c);
+      return c.col === 'doing' && m && m.session === sid;
+    });
+    if (hasDoing) { currentId = sid; break; }
+  }
+  const isOngoing = currentId !== null;
+  if (!currentId) currentId = sessionIds[0];
+
+  const sess = SESSIONS[currentId];
+  const sessCards = DATA.cards.filter(c => {
+    const m = metaFor(c);
+    return m && m.session === currentId;
+  });
+  const doingCards = sessCards.filter(c => c.col === 'doing');
+  const todoInSess = sessCards.filter(c => c.col === 'todo');
+  const doneInSess = sessCards.filter(c => c.col === 'done');
+
+  // Cross-session DOING (items that trail from earlier sessions)
+  const allDoing = DATA.cards.filter(c => c.col === 'doing');
+
+  const chipsHTML = allDoing.length
+    ? allDoing.slice(0, 6).map(c => {
+        const m = metaFor(c);
+        const sPill = m && m.session ? `${SESSIONS[m.session].code}·` : '';
+        return `<span class="chip"><span class="dot doing"></span>${sPill} ${c.slice ? c.slice + ' — ' : ''}${c.title.replace(/^[✅🎯⭐↩️✨]\s*/, '').slice(0, 60)}</span>`;
+      }).join('')
+    : `<span class="chip"><span class="dot todo"></span>Aucun DOING actif — prêt à démarrer le prochain slice</span>`;
+
+  const eyebrow = isOngoing
+    ? `<span class="live-dot"></span> Session en cours · ${sess.code}`
+    : `📅 Dernière session · ${sess.code}`;
+
+  slot.innerHTML = `
+    <div class="current-hero">
+      <div class="hero-emoji">${isOngoing ? '🔄' : '📚'}</div>
+      <div class="hero-body">
+        <div class="hero-eyebrow">${eyebrow}</div>
+        <div class="hero-title">${sess.label}</div>
+        <div class="hero-sub">${formatDateFR(sess.date)} — ${sess.desc}</div>
+        <div class="hero-chips">${chipsHTML}</div>
+      </div>
+      <div class="hero-stats">
+        <div class="big">${doneInSess.length}<span style="font-size:20px;color:var(--muted)">/${sessCards.length}</span></div>
+        <div class="lbl">Livrées</div>
+        ${doingCards.length ? `<div style="margin-top:6px;font-family:'Nunito';font-size:12px;color:var(--blue);font-weight:700">🚀 ${doingCards.length} DOING</div>` : ''}
+        ${todoInSess.length ? `<div style="font-family:'Nunito';font-size:12px;color:var(--muted);font-weight:700">📋 ${todoInSess.length} TODO</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+const VIEW_RENDERERS = {
+  session: renderBySession,
+  theme: renderByTheme,
+  status: renderByStatus,
+};
+
+function switchView(mode) {
+  document.querySelectorAll('.view-selector button').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === mode);
+  });
+  VIEW_RENDERERS[mode]();
+}
+
+document.querySelectorAll('.view-selector button').forEach(btn => {
+  btn.addEventListener('click', () => switchView(btn.dataset.view));
+});
+
+updateStats();
+renderCurrentHero();
+switchView('session');
 </script>
 </body>
 </html>
